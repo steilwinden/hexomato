@@ -5,9 +5,31 @@
   align-items: center; // Zentriert die Inhalte vertikal
   height: 100vh; // Setzt die Höhe des Containers auf 100% der Viewport-Höhe
   width: 80vw;
-}
 
-.hex-row {
-  display: flex;
-  justify-content: center;
+  .hex-row {
+    display: flex;
+    justify-content: center;
+  }
+
+  .caption-left {
+    margin-top: 25px;
+    margin-right: 10px;
+  }
+
+  .caption-top {
+    margin-left: 22px;
+    margin-top: -20px;
+    margin-bottom: 4px;
+  }
+
+  .caption-bottom {
+    margin-top: 22px;
+    margin-left: 22px;
+  }
+
+  .caption-right {
+    margin-top: 25px;
+    margin-left: 10px;
+  }
+
 }

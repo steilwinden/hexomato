@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {HexagonComponent} from "../hexagon/hexagon.component";
+import {GameService} from "../shared/game.service";
 
 @Component({
   selector: 'app-board',
@@ -14,7 +15,10 @@ import {HexagonComponent} from "../hexagon/hexagon.component";
 })
 
 export class BoardComponent implements OnInit {
+
   grid: any[] = [];
+
+  constructor(public gameService: GameService) {}
 
   ngOnInit() {
     this.createGrid();
@@ -28,5 +32,9 @@ export class BoardComponent implements OnInit {
         this.grid[row].push({});
       }
     }
+  }
+
+  numToLetter(num: number): string {
+    return String.fromCharCode(64 + num);
   }
 }

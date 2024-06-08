@@ -1,7 +1,29 @@
 <div class="board">
-  <div *ngFor="let row of grid; let rowIndex = index"
-       class="hex-row"
-       [style.margin-left.px]="rowIndex * 60">
-    <app-hexagon *ngFor="let r of row"></app-hexagon>
+  <div *ngFor="let row of grid; let rowIndex = index" class="hex-row"
+       [style.margin-left.px]="rowIndex * gameService.hexDiameter">
+
+    <div class="caption-left">{{ rowIndex + 1 }}</div>
+    <!-- oberste Reihe -->
+    <ng-container *ngIf="rowIndex === 0">
+      <div *ngFor="let col of row; let colIndex = index">
+        <div class="caption-top">{{ numToLetter(colIndex + 1) }}</div>
+        <app-hexagon></app-hexagon>
+      </div>
+    </ng-container>
+
+    <!-- mittlere Reihen -->
+    <ng-container *ngIf="rowIndex !== 0 && rowIndex !== grid.length - 1">
+      <app-hexagon *ngFor="let col of row"></app-hexagon>
+    </ng-container>
+
+    <!-- unterste Reihe -->
+    <ng-container *ngIf="rowIndex === grid.length - 1">
+      <div *ngFor="let col of row; let colIndex = index">
+        <app-hexagon></app-hexagon>
+        <div class="caption-bottom">{{ numToLetter(colIndex + 1) }}</div>
+      </div>
+    </ng-container>
+    <div class="caption-right">{{ rowIndex + 1 }}</div>
+
   </div>
 </div>

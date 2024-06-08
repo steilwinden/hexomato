@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {GameService} from "../shared/game.service";
 
 @Component({
   selector: 'app-hexagon',
@@ -9,4 +10,5 @@ import {Component} from '@angular/core';
 })
 export class HexagonComponent {
 
+  constructor(public gameService: GameService) {}
 }
