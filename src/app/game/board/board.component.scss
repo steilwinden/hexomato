@@ -1,0 +1,13 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // Zentriert die Inhalte horizontal
+  align-items: center; // Zentriert die Inhalte vertikal
+  height: 100vh; // Setzt die Höhe des Containers auf 100% der Viewport-Höhe
+  width: 80vw;
+}
+
+.hex-row {
+  display: flex;
+  justify-content: center;
+}

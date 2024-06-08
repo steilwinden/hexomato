@@ -1,0 +1,7 @@
+<div class="board">
+  <div *ngFor="let row of grid; let rowIndex = index"
+       class="hex-row"
+       [style.margin-left.px]="rowIndex * 60">
+    <app-hexagon *ngFor="let r of row"></app-hexagon>
+  </div>
+</div>
