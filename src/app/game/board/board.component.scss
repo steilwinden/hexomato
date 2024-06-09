@@ -6,6 +6,20 @@
   height: 100vh; // Setzt die Höhe des Containers auf 100% der Viewport-Höhe
   width: 80vw;
 
+  .polygon {
+    width: 800px;
+    height: 800px;
+    background-color: #19ae98;
+    clip-path: polygon(10% 9%, 94% 9%, 50% 60%, 6% 12%);
+    //z-index: 1;
+  }
+
+  .hexagons {
+    position: absolute;
+    font-weight: bold;
+    color: #e1dddd;
+  }
+
   .hex-row {
     display: flex;
     justify-content: center;
