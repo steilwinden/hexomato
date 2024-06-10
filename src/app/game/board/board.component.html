@@ -1,7 +1,12 @@
 <div class="board">
-  <div class="polygon"></div>
+  <svg class = "polygone-svg" width="1020" height="630" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="0,0 1020,0 510,315" fill="blue"/>
+    <polygon points="1020,0 1020,630 510,315" fill="orange"/>
+    <polygon points="0,630 510,315 1020,630" fill="blue"/>
+    <polygon points="0,0 510,315 0,630" fill="orange"/>
+  </svg>
   <div class="hexagons">
-    <div *ngFor="let row of grid; let rowIndex = index" class="hex-row"
+    <div *ngFor="let row of grid; let rowIndex = index" class="hex-rows"
          [style.margin-left.px]="rowIndex * gameService.hexDiameter">
 
       <div class="caption-left">{{ rowIndex + 1 }}</div>

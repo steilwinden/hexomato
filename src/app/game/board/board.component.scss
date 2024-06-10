@@ -4,46 +4,51 @@
   justify-content: center; // Zentriert die Inhalte horizontal
   align-items: center; // Zentriert die Inhalte vertikal
   height: 100vh; // Setzt die Höhe des Containers auf 100% der Viewport-Höhe
-  width: 80vw;
+  width: 100vw;
+  margin-left: -200px;
 
-  .polygon {
-    width: 800px;
-    height: 800px;
-    background-color: #19ae98;
-    clip-path: polygon(10% 9%, 94% 9%, 50% 60%, 6% 12%);
-    //z-index: 1;
+  .polygone-svg {
+    position: absolute;
+    border: 1px solid green;
+    opacity: 0.5;
+    z-index: 1;
+    margin-left: 300px;
   }
 
   .hexagons {
     position: absolute;
     font-weight: bold;
     color: #e1dddd;
-  }
 
-  .hex-row {
-    display: flex;
-    justify-content: center;
-  }
+    .hex-rows:first-child .caption-left,
+    .hex-rows:first-child .caption-right {
+      margin-top: 45px;
+    }
 
-  .caption-left {
-    margin-top: 25px;
-    margin-right: 10px;
-  }
+    .hex-rows {
+      display: flex;
+      justify-content: center;
 
-  .caption-top {
-    margin-left: 22px;
-    margin-top: -20px;
-    margin-bottom: 4px;
-  }
+      .caption-left {
+        margin-top: 25px;
+        margin-right: 10px;
+      }
 
-  .caption-bottom {
-    margin-top: 22px;
-    margin-left: 22px;
-  }
+      .caption-top {
+        margin-left: 22px;
+        margin-bottom: 4px;
+      }
 
-  .caption-right {
-    margin-top: 25px;
-    margin-left: 10px;
-  }
+      .caption-bottom {
+        margin-top: 22px;
+        margin-left: 22px;
+      }
 
+      .caption-right {
+        margin-top: 25px;
+        margin-left: 10px;
+      }
+
+    }
+  }
 }
