@@ -17,8 +17,11 @@ import {GameService} from "../shared/game.service";
 export class BoardComponent implements OnInit {
 
   grid: any[] = [];
+  SVG_WIDTH: number = 1050;
+  SVG_HEIGHT: number = 650;
 
-  constructor(public gameService: GameService) {}
+  constructor(public gameService: GameService) {
+  }
 
   ngOnInit() {
     this.createGrid();
@@ -36,5 +39,20 @@ export class BoardComponent implements OnInit {
 
   numToLetter(num: number): string {
     return String.fromCharCode(64 + num);
+  }
+
+  polygonPoints(i: number): string {
+    let SVG_START: number = 0;
+    let SVG_HALF_WIDTH: number = this.SVG_WIDTH / 2;
+    let SVG_HALF_HEIGHT: number = this.SVG_HEIGHT / 2;
+    if (i === 0) {
+      return `${SVG_START},${SVG_START} ${this.SVG_WIDTH} ${SVG_START} ${SVG_HALF_WIDTH},${SVG_HALF_HEIGHT}`;
+    } else if (i === 1) {
+      return `${this.SVG_WIDTH},${SVG_START} ${this.SVG_WIDTH},${this.SVG_HEIGHT} ${SVG_HALF_WIDTH},${SVG_HALF_HEIGHT}`;
+    } else if (i === 2) {
+      return `${SVG_START},${this.SVG_HEIGHT} ${SVG_HALF_WIDTH},${SVG_HALF_HEIGHT} ${this.SVG_WIDTH},${this.SVG_HEIGHT}`;
+    } else {
+      return `${SVG_START},${SVG_START} ${SVG_HALF_WIDTH},${SVG_HALF_HEIGHT} ${SVG_START},${this.SVG_HEIGHT}`;
+    }
   }
 }

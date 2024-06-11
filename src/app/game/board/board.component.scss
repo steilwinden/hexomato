@@ -20,14 +20,13 @@
     font-weight: bold;
     color: #e1dddd;
 
-    .hex-rows:first-child .caption-left,
-    .hex-rows:first-child .caption-right {
-      margin-top: 45px;
-    }
-
     .hex-rows {
       display: flex;
       justify-content: center;
+
+      div.caption-first {
+        margin-top: 45px;
+      }
 
       .caption-left {
         margin-top: 25px;

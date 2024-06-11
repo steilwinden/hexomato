@@ -1,15 +1,16 @@
 <div class="board">
-  <svg class = "polygone-svg" width="1020" height="630" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="0,0 1020,0 510,315" fill="blue"/>
-    <polygon points="1020,0 1020,630 510,315" fill="orange"/>
-    <polygon points="0,630 510,315 1020,630" fill="blue"/>
-    <polygon points="0,0 510,315 0,630" fill="orange"/>
+  <svg class="polygone-svg" [attr.width]="SVG_WIDTH" [attr.height]="SVG_HEIGHT" xmlns="http://www.w3.org/2000/svg">
+    <polygon [attr.points]="polygonPoints(0)" fill="blue"/>
+    <polygon [attr.points]="polygonPoints(1)" fill="orange"/>
+    <polygon [attr.points]="polygonPoints(2)" fill="blue"/>
+    <polygon [attr.points]="polygonPoints(3)" fill="orange"/>
   </svg>
   <div class="hexagons">
     <div *ngFor="let row of grid; let rowIndex = index" class="hex-rows"
          [style.margin-left.px]="rowIndex * gameService.hexDiameter">
 
-      <div class="caption-left">{{ rowIndex + 1 }}</div>
+      <div [ngClass]="{'caption-left': true, 'caption-first': rowIndex === 0}">{{ rowIndex + 1 }}</div>
+
       <!-- oberste Reihe -->
       <ng-container *ngIf="rowIndex === 0">
         <div *ngFor="let col of row; let colIndex = index">
@@ -30,8 +31,8 @@
           <div class="caption-bottom">{{ numToLetter(colIndex + 1) }}</div>
         </div>
       </ng-container>
-      <div class="caption-right">{{ rowIndex + 1 }}</div>
 
+      <div [ngClass]="{'caption-right': true, 'caption-first': rowIndex === 0}">{{ rowIndex + 1 }}</div>
     </div>
   </div>
 </div>
