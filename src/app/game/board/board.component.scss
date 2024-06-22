@@ -1,53 +1,57 @@
-.board {
+.container {
   display: flex;
-  flex-direction: column;
-  justify-content: center; // Zentriert die Inhalte horizontal
-  align-items: center; // Zentriert die Inhalte vertikal
-  height: 100vh; // Setzt die Höhe des Containers auf 100% der Viewport-Höhe
-  width: 100vw;
-  margin-left: -200px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 
-  .polygone-svg {
-    position: absolute;
-    border: 1px solid green;
-    opacity: 0.5;
-    z-index: 1;
-    margin-left: 300px;
-  }
+  .board {
+    position: relative;
 
-  .hexagons {
-    position: absolute;
-    font-weight: bold;
-    color: #e1dddd;
+    .polygone-svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0.5;
+      z-index: 1;
+    }
 
-    .hex-rows {
-      display: flex;
-      justify-content: center;
+    .hexagons {
+      position: absolute;
+      top: 10px;
+      font-weight: bold;
+      color: #e1dddd;
 
-      div.caption-first {
-        margin-top: 45px;
+      .hex-row {
+        display: flex;
+        margin-bottom: -20px;
+
+        div.caption-first {
+          margin-top: 45px;
+        }
+
+        .caption-left {
+          width: 25px;
+          margin-top: 25px;
+          margin-right: 10px;
+          text-align: right;
+        }
+
+        .caption-top {
+          margin-left: 22px;
+          margin-bottom: 4px;
+        }
+
+        .caption-bottom {
+          margin-left: 22px;
+        }
+
+        .caption-right {
+          margin-top: 25px;
+          margin-left: 10px;
+        }
+
       }
-
-      .caption-left {
-        margin-top: 25px;
-        margin-right: 10px;
-      }
-
-      .caption-top {
-        margin-left: 22px;
-        margin-bottom: 4px;
-      }
-
-      .caption-bottom {
-        margin-top: 22px;
-        margin-left: 22px;
-      }
-
-      .caption-right {
-        margin-top: 25px;
-        margin-left: 10px;
-      }
-
     }
   }
 }

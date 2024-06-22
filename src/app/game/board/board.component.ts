@@ -17,8 +17,8 @@ import {GameService} from "../shared/game.service";
 export class BoardComponent implements OnInit {
 
   grid: any[] = [];
-  SVG_WIDTH: number = 1050;
-  SVG_HEIGHT: number = 650;
+  SVG_WIDTH: number = 1030;
+  SVG_HEIGHT: number = 640;
 
   constructor(public gameService: GameService) {
   }
@@ -55,4 +55,5 @@ export class BoardComponent implements OnInit {
       return `${SVG_START},${SVG_START} ${SVG_HALF_WIDTH},${SVG_HALF_HEIGHT} ${SVG_START},${this.SVG_HEIGHT}`;
     }
   }
+
 }
