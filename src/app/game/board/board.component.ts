@@ -17,8 +17,6 @@ import {GameService} from "../shared/game.service";
 export class BoardComponent implements OnInit {
 
   grid: any[] = [];
-  SVG_WIDTH: number = 1030;
-  SVG_HEIGHT: number = 640;
 
   constructor(public gameService: GameService) {
   }
@@ -42,17 +40,36 @@ export class BoardComponent implements OnInit {
   }
 
   polygonPoints(i: number): string {
-    let SVG_START: number = 0;
-    let SVG_HALF_WIDTH: number = this.SVG_WIDTH / 2;
-    let SVG_HALF_HEIGHT: number = this.SVG_HEIGHT / 2;
+    let X1 = 20;
+    let Y1 = 30;
+    let X2 = 40;
+    let Y2 = 0;
+    let X3 = 725;
+    let Y3 = 0;
+    let X4 = 535;
+    let Y4 = 320;
+
+    let X5 = 1070;
+    let Y5 = 580;
+    let X6 = 1050;
+    let Y6 = 610;
+
+    let X7 = 340;
+    let Y7 = 640;
+    let X8 = 1030;
+    let Y8 = 640;
+
+    let X9 = 0;
+    let Y9 = 60;
+
     if (i === 0) {
-      return `${SVG_START},${SVG_START} ${this.SVG_WIDTH} ${SVG_START} ${SVG_HALF_WIDTH},${SVG_HALF_HEIGHT}`;
+      return `${X1},${Y1} ${X2} ${Y2} ${X3},${Y3} ${X4},${Y4}`;
     } else if (i === 1) {
-      return `${this.SVG_WIDTH},${SVG_START} ${this.SVG_WIDTH},${this.SVG_HEIGHT} ${SVG_HALF_WIDTH},${SVG_HALF_HEIGHT}`;
+      return `${X4},${Y4} ${X3} ${Y3} ${X5},${Y5} ${X6},${Y6}`;
     } else if (i === 2) {
-      return `${SVG_START},${this.SVG_HEIGHT} ${SVG_HALF_WIDTH},${SVG_HALF_HEIGHT} ${this.SVG_WIDTH},${this.SVG_HEIGHT}`;
+      return `${X7},${Y7} ${X4},${Y4} ${X6},${Y6} ${X8},${Y8}`;
     } else {
-      return `${SVG_START},${SVG_START} ${SVG_HALF_WIDTH},${SVG_HALF_HEIGHT} ${SVG_START},${this.SVG_HEIGHT}`;
+      return `${X7},${Y7} ${X9},${Y9} ${X1},${Y1} ${X4},${Y4}`;
     }
   }
 
