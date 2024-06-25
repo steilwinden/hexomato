@@ -1,43 +1,51 @@
-<div class="container">
+<div class="board-container">
   <div class="board">
     <svg class="polygone-svg" xmlns="http://www.w3.org/2000/svg">
-      <polygon [attr.points]="polygonPoints(0)" fill="#ffa500"/>
-      <polygon [attr.points]="polygonPoints(1)" fill="#add8e6"/>
-      <polygon [attr.points]="polygonPoints(2)" fill="#ffa500"/>
-      <polygon [attr.points]="polygonPoints(3)" fill="#add8e6"/>
+      <polygon class="polygon-player-1" [attr.points]="polygonPoints(0)"/>
+      <polygon class="polygon-player-2" [attr.points]="polygonPoints(1)"/>
+      <polygon class="polygon-player-1" [attr.points]="polygonPoints(2)"/>
+      <polygon class="polygon-player-2" [attr.points]="polygonPoints(3)"/>
     </svg>
     <div class="hexagons">
-      <div *ngFor="let row of grid; let rowIndex = index" class="hex-row"
-           [style.left.px]="rowIndex * gameService.hexDiameter/2"
-           [style.top.px]="rowIndex === 0 ? -25 : rowIndex * 50">
+      @for (row of grid; let rowIndex = $index; track rowIndex) {
+        <div class="hex-row"
+             [style.left.px]="rowIndex * gameService.hexDiameter/2"
+             [style.top.px]="rowIndex === 0 ? -24 : rowIndex * 50">
 
-        <div
-          [ngClass]="{'caption-left': true, 'caption-first': rowIndex === 0}">{{ rowIndex + 1 }}
+          <div
+            [ngClass]="{'caption-left': true, 'caption-first': rowIndex === 0}">{{ rowIndex + 1 }}
+          </div>
+
+          <!-- oberste Reihe -->
+          @if (rowIndex === 0) {
+            @for (col of row; let colIndex = $index; track colIndex) {
+              <div>
+                <div class="caption-top">{{ numToLetter(colIndex + 1) }}</div>
+                <app-hexagon [hexNode]="col"></app-hexagon>
+              </div>
+            }
+          }
+
+          <!-- mittlere Reihen -->
+          @if (rowIndex !== 0 && rowIndex !== grid.length - 1) {
+            @for (col of row; track $index) {
+              <app-hexagon [hexNode]="col"></app-hexagon>
+            }
+          }
+
+          <!-- unterste Reihe -->
+          @if (rowIndex === grid.length - 1) {
+            @for (col of row; let colIndex = $index; track colIndex) {
+              <div>
+                <app-hexagon [hexNode]="col"></app-hexagon>
+                <div class="caption-bottom">{{ numToLetter(colIndex + 1) }}</div>
+              </div>
+            }
+          }
+
+          <div [ngClass]="{'caption-right': true, 'caption-first': rowIndex === 0}">{{ rowIndex + 1 }}</div>
         </div>
-
-        <!-- oberste Reihe -->
-        <ng-container *ngIf="rowIndex === 0">
-          <div *ngFor="let col of row; let colIndex = index">
-            <div class="caption-top">{{ numToLetter(colIndex + 1) }}</div>
-            <app-hexagon></app-hexagon>
-          </div>
-        </ng-container>
-
-        <!-- mittlere Reihen -->
-        <ng-container *ngIf="rowIndex !== 0 && rowIndex !== grid.length - 1">
-          <app-hexagon *ngFor="let col of row"></app-hexagon>
-        </ng-container>
-
-        <!-- unterste Reihe -->
-        <ng-container *ngIf="rowIndex === grid.length - 1">
-          <div *ngFor="let col of row; let colIndex = index">
-            <app-hexagon></app-hexagon>
-            <div class="caption-bottom">{{ numToLetter(colIndex + 1) }}</div>
-          </div>
-        </ng-container>
-
-        <div [ngClass]="{'caption-right': true, 'caption-first': rowIndex === 0}">{{ rowIndex + 1 }}</div>
-      </div>
+      }
     </div>
   </div>
 </div>

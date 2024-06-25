@@ -1,6 +1,28 @@
-.hexagon-svg {
-  height: auto;
-  stroke: #889830;
-  stroke-width: 5px;
-  fill: #d6bf73;
+.hexagon {
+  position: relative;
+
+  .hexagon-svg {
+    position: absolute;
+    stroke: var(--color-canvas);
+    stroke-width: 5px;
+    fill: #d6bf73;
+  }
+
+  .hexagon-svg-content {
+    position: relative;
+  }
+
+  .player-1 {
+    fill: var(--color-player-1);
+  }
+
+  .player-2 {
+    fill: var(--color-player-2);
+  }
+
+  .active {
+    stroke: var(--color-canvas);
+    stroke-width: 4px;
+  }
+
 }

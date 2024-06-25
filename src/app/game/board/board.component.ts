@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {HexagonComponent} from "../hexagon/hexagon.component";
 import {GameService} from "../shared/game.service";
+import {HexNode} from "../shared/hex-node";
 
 @Component({
   selector: 'app-board',
@@ -30,7 +31,7 @@ export class BoardComponent implements OnInit {
     for (let row = 0; row < size; row++) {
       this.grid[row] = [];
       for (let col = 0; col < size; col++) {
-        this.grid[row].push({});
+        this.grid[row].push({active: false, player: 1} as HexNode);
       }
     }
   }

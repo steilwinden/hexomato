@@ -1,4 +1,13 @@
-<svg class="hexagon-svg" [style.width.px]="gameService.hexDiameter" viewBox="-2 0 104 115"
-     xmlns="http://www.w3.org/2000/svg">
-  <path d="M50 0L100 28.8675V86.6025L50 115.47L0 86.6025V28.8675L50 0Z"/>
-</svg>
+<div class="hexagon" [style.width.px]="gameService.hexDiameter">
+  <svg class="hexagon-svg" viewBox="-2 0 104 115"
+       xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 0L100 28.8675V86.6025L50 115.47L0 86.6025V28.8675L50 0Z"/>
+  </svg>
+  @if (hexNode.player === 1 || hexNode.player === 2) {
+    <svg
+      [attr.class]="getHexagonSvgContentClass()"
+      viewBox="1 0 104 115" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="53" cy="57.735" r="34.641"/>
+    </svg>
+  }
+</div>
