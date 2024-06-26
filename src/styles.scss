@@ -1,5 +1,5 @@
 :root {
-  --color-player-1: #a16c13;
+  --color-player-1: #a15a13;
   --color-player-2: #598b98;
   --color-canvas: #404040;
 }
@@ -8,4 +8,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  background: var(--color-canvas);
 }

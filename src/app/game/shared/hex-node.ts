@@ -1,4 +1,6 @@
+import {HexState} from "./hex-state.enum";
+
 export interface HexNode {
   active: boolean;
-  player: number;
+  state: HexState;
 }
