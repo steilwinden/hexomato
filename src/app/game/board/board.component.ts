@@ -32,7 +32,7 @@ export class BoardComponent implements OnInit {
     for (let row = 0; row < size; row++) {
       this.grid[row] = [];
       for (let col = 0; col < size; col++) {
-        this.grid[row].push({active: false, state: HexState.PLAYER_1} as HexNode);
+        this.grid[row].push({lastMove: false, startBlinking: false, state: HexState.EMPTY} as HexNode);
       }
     }
   }

@@ -14,7 +14,8 @@ export class HexagonComponent {
 
   @Input() hexNode!: HexNode;
 
-  constructor(public gameService: GameService) {}
+  constructor(public gameService: GameService) {
+  }
 
   getContentSvgClass() {
     const classes = ['content-svg'];
@@ -22,12 +23,19 @@ export class HexagonComponent {
       classes.push('player-1');
     } else if (this.hexNode.state === HexState.PLAYER_2) {
       classes.push('player-2');
+    } else if (this.hexNode.state === HexState.EMPTY) {
+      classes.push('empty');
     }
-    if (this.hexNode.active) {
-      classes.push('active');
+    if (this.hexNode.state !== HexState.EMPTY) {
+      if (this.hexNode.lastMove) {
+        classes.push('lastMove');
+      }
+      if (this.hexNode.startBlinking) {
+        classes.push('blink');
+      }
     }
     return classes.join(' ');
   }
 
-    protected readonly HexState = HexState;
+  protected readonly HexState = HexState;
 }

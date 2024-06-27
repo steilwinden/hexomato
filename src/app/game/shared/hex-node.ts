@@ -1,6 +1,7 @@
 import {HexState} from "./hex-state.enum";
 
 export interface HexNode {
-  active: boolean;
+  lastMove: boolean;
+  startBlinking: boolean;
   state: HexState;
 }

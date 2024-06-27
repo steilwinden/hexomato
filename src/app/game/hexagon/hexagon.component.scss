@@ -20,9 +20,23 @@
     fill: var(--color-player-2);
   }
 
-  .active {
+  .empty {
+    opacity: 0;
+  }
+
+  .lastMove {
     stroke: var(--color-canvas);
     stroke-width: 4px;
+  }
+
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .blink {
+    animation: blink 1s ease 5;
   }
 
 }
