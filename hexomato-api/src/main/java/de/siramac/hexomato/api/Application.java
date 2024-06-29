@@ -1,13 +1,13 @@
-package de.siramac.hexomato_api;
+package de.siramac.hexomato.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HexomatoApiApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HexomatoApiApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

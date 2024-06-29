@@ -1,10 +1,10 @@
-package de.siramac.hexomato_api;
+package de.siramac.hexomato.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HexomatoApiApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {
