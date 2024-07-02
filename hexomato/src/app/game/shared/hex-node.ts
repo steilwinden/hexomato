@@ -1,7 +1,8 @@
-import {HexState} from "./hex-state.enum";
+import {Player} from "./player.enum";
 
 export interface HexNode {
+  id: number;
   lastMove: boolean;
   startBlinking: boolean;
-  state: HexState;
+  player: Player | null;
 }

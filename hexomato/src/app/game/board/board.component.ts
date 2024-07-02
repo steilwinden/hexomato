@@ -3,7 +3,10 @@ import {CommonModule} from "@angular/common";
 import {HexagonComponent} from "../hexagon/hexagon.component";
 import {GameService} from "../shared/game.service";
 import {HexNode} from "../shared/hex-node";
-import {HexState} from "../shared/hex-state.enum";
+import {SseService} from "../shared/sse.service";
+import {environment} from "../../../environments/environment";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'app-board',
@@ -20,7 +23,11 @@ export class BoardComponent implements OnInit {
 
   grid: any[] = [];
 
-  constructor(public gameService: GameService) {
+  constructor(private sseService: SseService, public gameService: GameService) {
+    this.sseService.getServerSentEvent(`${environment.apiUrl}/api/register/sse`).pipe(
+      takeUntilDestroyed(),
+      tap(e => console.log("e = ", e))
+    ).subscribe();
   }
 
   ngOnInit() {
@@ -32,7 +39,7 @@ export class BoardComponent implements OnInit {
     for (let row = 0; row < size; row++) {
       this.grid[row] = [];
       for (let col = 0; col < size; col++) {
-        this.grid[row].push({lastMove: false, startBlinking: false, state: HexState.EMPTY} as HexNode);
+        this.grid[row].push({id: 0, lastMove: false, startBlinking: false, player: null} as HexNode);
       }
     }
   }

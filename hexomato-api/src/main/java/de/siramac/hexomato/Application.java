@@ -1,4 +1,4 @@
-package de.siramac.hexomato.api;
+package de.siramac.hexomato;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

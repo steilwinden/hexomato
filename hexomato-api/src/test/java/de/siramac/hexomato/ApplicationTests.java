@@ -1,4 +1,4 @@
-package de.siramac.hexomato.api;
+package de.siramac.hexomato;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
