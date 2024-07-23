@@ -33,7 +33,7 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/api/**").permitAll()
+                        .pathMatchers("/ws/**").permitAll()
                         .anyExchange().authenticated()
                 )
                 .httpBasic(withDefaults())

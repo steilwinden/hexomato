@@ -1,4 +1,4 @@
-package de.siramac.hexomato.ws;
+package de.siramac.hexomato.domain;
 
 import lombok.Getter;
 

@@ -6,6 +6,7 @@
     stroke: var(--color-canvas);
     stroke-width: 5px;
     fill: #d6bf73;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
   }
 
   .content-svg {
