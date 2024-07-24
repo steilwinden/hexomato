@@ -32,5 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-/src/main/resources/data/dbhex.mv.db
-/src/main/resources/data/dbhex.lock.db
+/src/main/resources/db/dbhex.mv.db
+/src/main/resources/db/dbhex.lock.db
+/src/main/resources/db/dbhex.trace.db

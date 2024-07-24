@@ -44,14 +44,15 @@ public class GameController {
 //                .subscribe();
 //    }
 
-    @GetMapping("/createGame/player/{player}/name/{name}/")
-    public Mono<Long> makeMove(@PathVariable Player player, @PathVariable String name) {
+    @GetMapping("/createGame/player/{player}/name/{name}")
+    public Mono<Long> createGame(@PathVariable Player player, @PathVariable String name) {
+        log.info("createCame with: " + player + ", " + name);
         return Mono.fromCallable(() -> gameService.createGame(player, name))
                 .subscribeOn(Schedulers.boundedElastic());
     }
 
     @GetMapping("/joinGame/gameId/{gameId}/name/{name}")
-    public Mono<ResponseEntity<Object>> makeMove(@PathVariable Long gameId, @PathVariable String name) {
+    public Mono<ResponseEntity<Object>> joinGame(@PathVariable Long gameId, @PathVariable String name) {
         return Mono.fromCallable(() -> {
             boolean result = gameService.joinGame(gameId, name);
             if (!result) {

@@ -1,1 +1,5 @@
 <button mat-raised-button (click)="initGame()">OK</button>
+
+@if (createGame$ | async; as gameId) {
+  <div>Game-ID: {{ gameId }}</div>
+}
