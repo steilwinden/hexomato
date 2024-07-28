@@ -1,0 +1,68 @@
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 48px;
+
+  .name-field {
+    width: 800px;
+    margin: 16px;
+  }
+
+  .title {
+    color: var(--mdc-protected-button-label-text-color);
+  }
+
+  .create-game-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 32px;
+
+    .left-button {
+      color: var(--color-player-1);
+    }
+
+    .right-button {
+      color: var(--color-player-2);
+    }
+  }
+
+  .table-container {
+    width: 100%;
+    max-width: 1460px;
+    margin: 8px;
+  }
+
+  table {
+    background-color: #333333;
+    border-collapse: collapse;
+
+    td[mat-cell] {
+      position: relative;
+      text-align: center;
+    }
+
+    /* draw a line between the columns */
+    td[mat-cell]:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background-color: var(--mat-table-row-item-outline-color);
+    }
+
+    .player1-button {
+      color: var(--color-player-1);
+    }
+
+    .player2-button {
+      color: var(--color-player-2);
+    }
+  }
+}

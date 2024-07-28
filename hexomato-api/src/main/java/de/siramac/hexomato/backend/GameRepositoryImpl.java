@@ -1,4 +1,4 @@
-package de.siramac.hexomato.backend.repository;
+package de.siramac.hexomato.backend;
 
 import de.siramac.hexomato.backend.entity.GameEntity;
 import de.siramac.hexomato.backend.entity.GameEntityRepository;

@@ -1,4 +1,4 @@
-package de.siramac.hexomato.backend.repository;
+package de.siramac.hexomato.backend;
 
 import de.siramac.hexomato.backend.entity.GameEntity;
 import de.siramac.hexomato.backend.entity.NodeEntity;
@@ -27,7 +27,7 @@ public class GameMapper {
         }
 
         return new Game(gameEntity.getId(), gameEntity.getNamePlayer1(), gameEntity.getNamePlayer2(),
-                gameEntity.getTurn(), gameEntity.getWinner(), board);
+                gameEntity.getTurn(), gameEntity.getWinner(), gameEntity.getCreatedOn(), board);
     }
 
     private Node createNode(NodeEntity nodeEntity) {
@@ -53,7 +53,7 @@ public class GameMapper {
 
     private static GameEntity createGameEntity(Game game) {
         GameEntity gameEntity = new GameEntity(game.getNamePlayer1(), game.getNamePlayer2(),
-                game.getTurn(), game.getWinner(), null);
+                game.getTurn(), game.getWinner(), game.getCreatedOn(), null);
         gameEntity.setId(game.getId());
         return gameEntity;
     }

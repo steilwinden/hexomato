@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
+import {Player} from "./player.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class ApiService {
   constructor(private http: HttpClient) {
   }
 
-  createGame(player: string, name: string): Observable<bigint> {
+  createGame(player: Player, name: string): Observable<bigint> {
     const url = `${this.apiBaseUrl}/ws/createGame/player/${player}/name/${name}`;
     const basicAuth = 'Basic ' + btoa(`${this.apiUsername}:${this.apiPassword}`);
 

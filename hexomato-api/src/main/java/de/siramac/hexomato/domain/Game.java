@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Game {
     private Player turn;
     @Setter
     private Player winner;
+    private Instant createdOn;
     private Node[][] board;
 
     public static final int BOARD_SIZE = 11;
@@ -42,6 +44,7 @@ public class Game {
             namePlayer2 = name;
         }
         turn = PLAYER_1;
+        createdOn = Instant.now();
         board = new Node[BOARD_SIZE][BOARD_SIZE];
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
