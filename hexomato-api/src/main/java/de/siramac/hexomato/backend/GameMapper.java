@@ -2,7 +2,6 @@ package de.siramac.hexomato.backend;
 
 import de.siramac.hexomato.backend.entity.GameEntity;
 import de.siramac.hexomato.backend.entity.NodeEntity;
-import de.siramac.hexomato.backend.entity.NodeIdEntity;
 import de.siramac.hexomato.domain.Game;
 import de.siramac.hexomato.domain.Node;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,7 @@ public class GameMapper {
         Node[][] board = new Node[BOARD_SIZE][BOARD_SIZE];
 
         for (NodeEntity nodeEntity : gameEntity.getNodeEntityList()) {
-            board[nodeEntity.getNodeIdEntity().getBoardRow()][nodeEntity.getNodeIdEntity().getBoardCol()] = createNode(nodeEntity);
+            board[nodeEntity.getBoardRow()][nodeEntity.getBoardCol()] = createNode(nodeEntity);
         }
 
         return new Game(gameEntity.getId(), gameEntity.getNamePlayer1(), gameEntity.getNamePlayer2(),
@@ -31,7 +30,7 @@ public class GameMapper {
     }
 
     private Node createNode(NodeEntity nodeEntity) {
-        return new Node(nodeEntity.getNodeIdEntity().getBoardRow(), nodeEntity.getNodeIdEntity().getBoardCol(),
+        return new Node(nodeEntity.getId(), nodeEntity.getBoardRow(), nodeEntity.getBoardCol(),
                 nodeEntity.isLastMove(), nodeEntity.isPartOfWinnerPath(), nodeEntity.getPlayer());
     }
 
@@ -59,7 +58,6 @@ public class GameMapper {
     }
 
     private NodeEntity createNodeEntity(GameEntity gameEntity, int row, int col, Node node) {
-        NodeIdEntity nodeIdEntity = new NodeIdEntity(gameEntity, row, col);
-        return new NodeEntity(nodeIdEntity, node.isLastMove(), node.isPartOfWinnerPath(), node.getPlayer());
+        return new NodeEntity(row, col, gameEntity, node.isLastMove(), node.isPartOfWinnerPath(), node.getPlayer());
     }
 }

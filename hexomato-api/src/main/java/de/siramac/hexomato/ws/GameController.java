@@ -17,7 +17,7 @@ import reactor.core.scheduler.Schedulers;
 
 @Slf4j
 @RestController
-@RequestMapping("/ws")
+@RequestMapping("/ws/game")
 public class GameController {
 
     private final Sinks.Many<ServerSentEvent<GameWs>> sink = Sinks.many().replay().all();
@@ -43,13 +43,6 @@ public class GameController {
 //                })
 //                .subscribe();
 //    }
-
-    @GetMapping("/createGame/player/{player}/name/{name}")
-    public Mono<Long> createGame(@PathVariable Player player, @PathVariable String name) {
-        log.info("createCame with: " + player + ", " + name);
-        return Mono.fromCallable(() -> gameService.createGame(player, name))
-                .subscribeOn(Schedulers.boundedElastic());
-    }
 
     @GetMapping("/joinGame/gameId/{gameId}/name/{name}")
     public Mono<ResponseEntity<Object>> joinGame(@PathVariable Long gameId, @PathVariable String name) {

@@ -14,6 +14,14 @@
     color: var(--mdc-protected-button-label-text-color);
   }
 
+  .player1-button {
+    color: var(--color-player-1);
+  }
+
+  .player2-button {
+    color: var(--color-player-2);
+  }
+
   .create-game-buttons {
     display: flex;
     flex-direction: row;
@@ -21,14 +29,6 @@
     width: 100%;
     max-width: 800px;
     margin-bottom: 32px;
-
-    .left-button {
-      color: var(--color-player-1);
-    }
-
-    .right-button {
-      color: var(--color-player-2);
-    }
   }
 
   .table-container {
@@ -41,7 +41,12 @@
     background-color: #333333;
     border-collapse: collapse;
 
+    .player-name {
+      font-size: 16px;
+    }
+
     td[mat-cell] {
+      width: 50%;
       position: relative;
       text-align: center;
     }
@@ -55,14 +60,6 @@
       bottom: 0;
       width: 1px;
       background-color: var(--mat-table-row-item-outline-color);
-    }
-
-    .player1-button {
-      color: var(--color-player-1);
-    }
-
-    .player2-button {
-      color: var(--color-player-2);
     }
   }
 }

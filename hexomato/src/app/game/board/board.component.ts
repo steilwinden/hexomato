@@ -24,7 +24,7 @@ export class BoardComponent implements OnInit {
   grid: any[] = [];
 
   constructor(private sseService: SseService, public gameService: GameService) {
-    this.sseService.getServerSentEvent(`${environment.apiBaseUrl}/api/register/sse`).pipe(
+    this.sseService.getGameEvents(`${environment.apiBaseUrl}/api/register/sse`).pipe(
       takeUntilDestroyed(),
       tap(e => console.log("e = ", e))
     ).subscribe();

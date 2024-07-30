@@ -1,23 +1,22 @@
 package de.siramac.hexomato.backend.entity;
 
 import de.siramac.hexomato.domain.Player;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class NodeEntity {
+public class NodeEntity extends AbstractEntity {
 
-    @EmbeddedId
-    private NodeIdEntity nodeIdEntity;
-
+    private int boardRow;
+    private int boardCol;
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private GameEntity gameEntity;
     private boolean lastMove;
     private boolean partOfWinnerPath;
     @Enumerated(EnumType.STRING)

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -15,10 +17,13 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
-    public Long createGame(Player player, String name) {
+    public void createGame(Player player, String name) {
         Game game = new Game(player, name);
-        game = gameRepository.saveGame(game);
-        return game.getId();
+        gameRepository.saveGame(game);
+    }
+
+    public List<Game> loadCurrentGames() {
+        return gameRepository.loadCurrentGames();
     }
 
     public synchronized boolean joinGame(Long gameId, String name) {

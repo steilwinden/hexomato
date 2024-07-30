@@ -1,6 +1,7 @@
 package de.siramac.hexomato.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +14,10 @@ import static de.siramac.hexomato.domain.Player.PLAYER_2;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Game {
 
+    @EqualsAndHashCode.Include
     private Long id;
     @Setter
     private String namePlayer1;
@@ -56,8 +59,8 @@ public class Game {
 
     public List<Node> getNeighbours(Node node) {
         List<Node> neighbours = new ArrayList<>();
-        for (int i = -1; i < 2; i++) {
-            int row = node.getRow() + i;
+        for (int i = 0; i < 3; i++) {
+            int row = node.getRow() + i - 1;
             for (int j = 0; j < 2; j++) {
                 int col = node.getCol() + neighbourMatrix[i][j];
                 if (isValidNode(row, col)) {
