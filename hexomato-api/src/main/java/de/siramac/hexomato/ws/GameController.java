@@ -44,17 +44,6 @@ public class GameController {
 //                .subscribe();
 //    }
 
-    @GetMapping("/joinGame/gameId/{gameId}/name/{name}")
-    public Mono<ResponseEntity<Object>> joinGame(@PathVariable Long gameId, @PathVariable String name) {
-        return Mono.fromCallable(() -> {
-            boolean result = gameService.joinGame(gameId, name);
-            if (!result) {
-                return ResponseEntity.unprocessableEntity().build();
-            }
-            return ResponseEntity.ok().build();
-        }).subscribeOn(Schedulers.boundedElastic());
-    }
-
     @GetMapping("/makeMove/game/{gameId}/row/{row}/col/{col}/player({player}")
     public Mono<ResponseEntity<Object>> makeMove(@PathVariable Long gameId, @PathVariable int row, @PathVariable int col,
                                                  @PathVariable Player player) {

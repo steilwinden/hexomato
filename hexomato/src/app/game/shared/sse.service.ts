@@ -1,5 +1,5 @@
 import {Injectable, NgZone} from '@angular/core';
-import {HexNode} from "./hex-node";
+import {Node} from "./node";
 import {Observable} from "rxjs";
 import {Game} from "./game";
 
@@ -33,13 +33,13 @@ export class SseService {
     });
   }
 
-  getGameEvents(url: string): Observable<HexNode> {
+  getGameEvents(url: string): Observable<Node> {
     return new Observable(observer => {
       const eventSource = new EventSource(url);
 
       eventSource.onmessage = event => {
         this.zone.run(() => {
-          const hexNode: HexNode = JSON.parse(event.data);
+          const hexNode: Node = JSON.parse(event.data);
           observer.next(hexNode);
         });
       };

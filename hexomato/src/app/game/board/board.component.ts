@@ -2,11 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {HexagonComponent} from "../hexagon/hexagon.component";
 import {GameService} from "../shared/game.service";
-import {HexNode} from "../shared/hex-node";
+import {Node} from "../shared/node";
 import {SseService} from "../shared/sse.service";
 import {environment} from "../../../environments/environment";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {tap} from "rxjs";
+import {Player} from "../shared/player.enum";
 
 @Component({
   selector: 'app-board',
@@ -39,7 +40,7 @@ export class BoardComponent implements OnInit {
     for (let row = 0; row < size; row++) {
       this.grid[row] = [];
       for (let col = 0; col < size; col++) {
-        this.grid[row].push({id: 0, lastMove: false, startBlinking: false, player: null} as HexNode);
+        this.grid[row].push({row: 0, col:0, lastMove: false, partOfWinnerPath: false, player: Player.PLAYER_1} as Node);
       }
     }
   }

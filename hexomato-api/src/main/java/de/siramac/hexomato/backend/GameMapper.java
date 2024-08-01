@@ -58,6 +58,8 @@ public class GameMapper {
     }
 
     private NodeEntity createNodeEntity(GameEntity gameEntity, int row, int col, Node node) {
-        return new NodeEntity(row, col, gameEntity, node.isLastMove(), node.isPartOfWinnerPath(), node.getPlayer());
+        NodeEntity nodeEntity = new NodeEntity(row, col, gameEntity, node.isLastMove(), node.isPartOfWinnerPath(), node.getPlayer());
+        nodeEntity.setId(node.getId());
+        return nodeEntity;
     }
 }

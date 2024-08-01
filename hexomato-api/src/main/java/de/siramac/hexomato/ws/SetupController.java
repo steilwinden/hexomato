@@ -4,6 +4,7 @@ import de.siramac.hexomato.domain.Game;
 import de.siramac.hexomato.domain.Player;
 import de.siramac.hexomato.service.GameService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,17 @@ public class SetupController {
                 .subscribeOn(Schedulers.boundedElastic())
                 .doOnNext(this::triggerSse)
                 .then();
+    }
+
+    @GetMapping("/joinGame/gameId/{gameId}/name/{name}")
+    public Mono<ResponseEntity<Object>> joinGame(@PathVariable Long gameId, @PathVariable String name) {
+        return Mono.fromCallable(() -> {
+            boolean result = gameService.joinGame(gameId, name);
+            if (!result) {
+                return ResponseEntity.unprocessableEntity().build();
+            }
+            return ResponseEntity.ok().build();
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     private void triggerSse(List<Game> gameList) {

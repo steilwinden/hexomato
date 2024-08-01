@@ -1,6 +1,6 @@
 import {Routes} from "@angular/router";
 import {BoardComponent} from "./board/board.component";
-import {SetupComponent} from "./settings/setup.component";
+import {SetupComponent} from "./setup/setup.component";
 
 const gameRoutes: Routes = [
   {path: '', component: SetupComponent},

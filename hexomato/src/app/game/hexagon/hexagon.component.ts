@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {GameService} from "../shared/game.service";
-import {HexNode} from "../shared/hex-node";
+import {Node} from "../shared/node";
 import {Player} from "../shared/player.enum";
 
 @Component({
@@ -12,7 +12,7 @@ import {Player} from "../shared/player.enum";
 })
 export class HexagonComponent {
 
-  @Input() hexNode!: HexNode;
+  @Input() hexNode!: Node;
 
   constructor(public gameService: GameService) {
   }
@@ -30,7 +30,7 @@ export class HexagonComponent {
     if (this.hexNode.lastMove) {
       classes.push('lastMove');
     }
-    if (this.hexNode.startBlinking) {
+    if (this.hexNode.partOfWinnerPath) {
       classes.push('blink');
     }
     return classes.join(' ');

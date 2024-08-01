@@ -26,4 +26,15 @@ export class ApiService {
 
     return this.http.get<void>(url, {headers});
   }
+
+  joinGame(gameId: bigint, name: string): Observable<void> {
+    const url = `${this.apiBaseUrl}/ws/setup/joinGame/gameId/${gameId}/name/${name}`;
+    const basicAuth = 'Basic ' + btoa(`${this.apiUsername}:${this.apiPassword}`);
+
+    const headers = new HttpHeaders({
+      'Authorization': basicAuth
+    });
+
+    return this.http.get<void>(url, {headers});
+  }
 }

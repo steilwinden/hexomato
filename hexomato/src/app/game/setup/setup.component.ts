@@ -55,7 +55,10 @@ export class SetupComponent {
     this.anyButtonClicked$.next(true);
   }
 
-  joinGameClick(): void {
+  joinGameClick(gameId: bigint): void {
+    this.apiService.joinGame(gameId, this.playerName$.getValue()).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
     this.anyButtonClicked$.next(true);
   }
 

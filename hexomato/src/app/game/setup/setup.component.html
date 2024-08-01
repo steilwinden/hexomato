@@ -30,7 +30,7 @@
           <td mat-cell *matCellDef="let game">
             @if (game.namePlayer1 == null) {
               <button class="player1-button" mat-raised-button [disabled]="buttonsDisabled$ | async"
-                      (click)="joinGameClick()">
+                      (click)="joinGameClick(game.id)">
                 <mat-list-item>
                   <mat-icon matListItemIcon>person</mat-icon>
                 </mat-list-item>
@@ -45,7 +45,7 @@
           <td mat-cell *matCellDef="let game">
             @if (game.namePlayer2 == null) {
               <button class="player2-button" mat-raised-button [disabled]="buttonsDisabled$ | async"
-                      (click)="joinGameClick()">
+                      (click)="joinGameClick(game.id)">
                 <mat-list-item>
                   <mat-icon matListItemIcon>person</mat-icon>
                 </mat-list-item>

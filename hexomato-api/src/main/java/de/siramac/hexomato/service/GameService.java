@@ -31,9 +31,9 @@ public class GameService {
         if (game == null) {
             return false;
         }
-        if (game.getNamePlayer1() != null) {
+        if (game.getNamePlayer1() == null) {
             game.setNamePlayer1(name);
-        } else if (game.getNamePlayer2() != null) {
+        } else if (game.getNamePlayer2() == null) {
             game.setNamePlayer2(name);
         }
         gameRepository.saveGame(game);
