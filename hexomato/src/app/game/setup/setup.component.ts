@@ -1,7 +1,7 @@
-import {Component, DestroyRef, inject} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {MatButtonModule} from "@angular/material/button";
 import {ApiService} from "../shared/api.service";
-import {BehaviorSubject, combineLatest, map, Observable} from "rxjs";
+import {BehaviorSubject, combineLatest, map, Observable, tap} from "rxjs";
 import {CommonModule} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
@@ -14,6 +14,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {environment} from "../../../environments/environment";
 import {SseService} from "../shared/sse.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings',
@@ -23,42 +24,67 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
   templateUrl: './setup.component.html',
   styleUrl: './setup.component.scss'
 })
-export class SetupComponent {
+export class SetupComponent implements OnInit {
 
-  form: FormGroup = this.fb.group({playerName: ['']});
-  playerName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  form: FormGroup = this.fb.group({name: ['']});
+  name$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   anyButtonClicked$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  buttonsDisabled$: Observable<boolean>;
-  games$: Observable<Game[]>;
+  buttonsDisabled$?: Observable<boolean>;
+  games$?: Observable<Game[]>;
   displayedColumns: string[] = ['namePlayer1', 'namePlayer2'];
   destroyRef: DestroyRef = inject(DestroyRef);
 
+  constructor(private router: Router, private fb: FormBuilder, private apiService: ApiService,
+              private sseService: SseService) {
+  }
 
-  constructor(private fb: FormBuilder, private apiService: ApiService, private sseService: SseService) {
-    this.form.get('playerName')!.valueChanges.pipe()
-      .subscribe(value => this.playerName$.next(value));
+  ngOnInit() {
+    this.form.get('name')!.valueChanges.pipe()
+      .subscribe(value => this.name$.next(value));
 
     this.buttonsDisabled$ = combineLatest([
-      this.playerName$,
+      this.name$,
       this.anyButtonClicked$
     ]).pipe(
-      map(([playerName, anyButtonClicked]) => playerName.length === 0 || anyButtonClicked)
+      map(([name, anyButtonClicked]) => name.length === 0 || anyButtonClicked)
     );
 
-    this.games$ = this.sseService.getSetupEvents(`${environment.apiBaseUrl}/ws/setup/register/sse`);
+    this.games$ = this.sseService.getSetupEvents(`${environment.apiBaseUrl}/ws/setup/register/sse`).pipe(
+      tap(games => games.find(game =>
+        this.findGameReadyForPlaying(game) && this.router.navigate(['/board'])
+      )),
+      map(games => games.filter(game => game.namePlayer1 !== null || game.namePlayer2 !== null))
+    );
+  }
+
+  private findGameReadyForPlaying(game: Game) {
+    const storedGameId = sessionStorage.getItem('gameId');
+    return game.id.toString() === storedGameId && game.namePlayer1 !== null && game.namePlayer2 !== null;
   }
 
   createGameClick(player: Player): void {
-    this.apiService.createGame(player, this.playerName$.getValue()).pipe(
-      takeUntilDestroyed(this.destroyRef)
+    this.apiService.createGame(player, this.name$.getValue()).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap(gameId => {
+        sessionStorage.setItem('gameId', gameId.toString());
+        sessionStorage.setItem('player', player);
+      })
     ).subscribe();
     this.anyButtonClicked$.next(true);
   }
 
-  joinGameClick(gameId: bigint): void {
-    this.apiService.joinGame(gameId, this.playerName$.getValue()).pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe();
+  joinGameClick(gameId: bigint, player: Player): void {
+    this.apiService.joinGame(gameId, player, this.name$.getValue()).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap(() => {
+        sessionStorage.setItem('gameId', gameId.toString());
+        sessionStorage.setItem('player', player);
+      })
+    ).subscribe(() => {
+      }
+      // this.router.navigate(['/board'])
+    );
+
     this.anyButtonClicked$.next(true);
   }
 

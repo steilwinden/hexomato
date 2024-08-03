@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {HexagonComponent} from "../hexagon/hexagon.component";
 import {GameService} from "../shared/game.service";
@@ -8,13 +8,21 @@ import {environment} from "../../../environments/environment";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {tap} from "rxjs";
 import {Player} from "../shared/player.enum";
+import {Router} from "@angular/router";
+import {MatButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
+import {MatListItem, MatListItemIcon} from "@angular/material/list";
 
 @Component({
   selector: 'app-board',
   standalone: true,
   imports: [
     CommonModule,
-    HexagonComponent
+    HexagonComponent,
+    MatButton,
+    MatIcon,
+    MatListItem,
+    MatListItemIcon,
   ],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
@@ -23,16 +31,23 @@ import {Player} from "../shared/player.enum";
 export class BoardComponent implements OnInit {
 
   grid: any[] = [];
+  destroyRef: DestroyRef = inject(DestroyRef);
 
-  constructor(private sseService: SseService, public gameService: GameService) {
-    this.sseService.getGameEvents(`${environment.apiBaseUrl}/api/register/sse`).pipe(
-      takeUntilDestroyed(),
-      tap(e => console.log("e = ", e))
-    ).subscribe();
+  constructor(private router: Router, private sseService: SseService, public gameService: GameService) {
   }
 
   ngOnInit() {
+    const storedGameId = sessionStorage.getItem('gameId');
+    const storedPlayer = sessionStorage.getItem('player');
+    console.log("storedGameId: " + storedGameId);
+    console.log("storedPlayer: " + storedPlayer);
+
     this.createGrid();
+
+    this.sseService.getGameEvents(`${environment.apiBaseUrl}/api/register/sse`).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap(e => console.log("sse-event = ", e))
+    ).subscribe();
   }
 
   createGrid() {
@@ -40,7 +55,13 @@ export class BoardComponent implements OnInit {
     for (let row = 0; row < size; row++) {
       this.grid[row] = [];
       for (let col = 0; col < size; col++) {
-        this.grid[row].push({row: 0, col:0, lastMove: false, partOfWinnerPath: false, player: Player.PLAYER_1} as Node);
+        this.grid[row].push({
+          row: 0,
+          col: 0,
+          lastMove: false,
+          partOfWinnerPath: false,
+          player: Player.PLAYER_1
+        } as Node);
       }
     }
   }
@@ -81,6 +102,12 @@ export class BoardComponent implements OnInit {
     } else {
       return `${X7},${Y7} ${X9},${Y9} ${X1},${Y1} ${X4},${Y4}`;
     }
+  }
+
+  quitClick(): void {
+    sessionStorage.removeItem('gameId');
+    sessionStorage.removeItem('player');
+    this.router.navigate(['/']).then();
   }
 
 }

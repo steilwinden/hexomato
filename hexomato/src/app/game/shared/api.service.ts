@@ -16,7 +16,7 @@ export class ApiService {
   constructor(private http: HttpClient) {
   }
 
-  createGame(player: Player, name: string): Observable<void> {
+  createGame(player: Player, name: string): Observable<bigint> {
     const url = `${this.apiBaseUrl}/ws/setup/createGame/player/${player}/name/${name}`;
     const basicAuth = 'Basic ' + btoa(`${this.apiUsername}:${this.apiPassword}`);
 
@@ -24,11 +24,11 @@ export class ApiService {
       'Authorization': basicAuth
     });
 
-    return this.http.get<void>(url, {headers});
+    return this.http.get<bigint>(url, {headers});
   }
 
-  joinGame(gameId: bigint, name: string): Observable<void> {
-    const url = `${this.apiBaseUrl}/ws/setup/joinGame/gameId/${gameId}/name/${name}`;
+  joinGame(gameId: bigint, player: Player, name: string): Observable<void> {
+    const url = `${this.apiBaseUrl}/ws/setup/joinGame/gameId/${gameId}/player/${player}/name/${name}`;
     const basicAuth = 'Basic ' + btoa(`${this.apiUsername}:${this.apiPassword}`);
 
     const headers = new HttpHeaders({

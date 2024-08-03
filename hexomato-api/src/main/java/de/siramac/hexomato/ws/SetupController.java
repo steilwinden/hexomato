@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("/ws/setup")
 public class SetupController {
 
-    private final Sinks.Many<ServerSentEvent<List<GameWs>>> sink = Sinks.many().replay().all();
+    private final Sinks.Many<ServerSentEvent<List<GameOnlyWs>>> sink = Sinks.many().replay().all();
     private final GameService gameService;
 
     public SetupController(GameService gameService) {
@@ -30,39 +30,43 @@ public class SetupController {
     }
 
     @GetMapping(value = "/register/sse", produces = "text/event-stream")
-    public Flux<ServerSentEvent<List<GameWs>>> registerSse() {
+    public Flux<ServerSentEvent<List<GameOnlyWs>>> registerSse() {
         return sink.asFlux()
                 .doOnSubscribe(subscription -> log.info("client connected"))
                 .doOnCancel(() -> log.info("client disconnected"));
     }
 
     @GetMapping("/createGame/player/{player}/name/{name}")
-    public Mono<Void> createGame(@PathVariable Player player, @PathVariable String name) {
-        return Mono.fromCallable(() -> {
-                    gameService.createGame(player, name);
-                    return gameService.loadCurrentGames();
-                })
+    public Mono<Long> createGame(@PathVariable Player player, @PathVariable String name) {
+        return Mono.fromCallable(() -> gameService.createGame(player, name))
                 .subscribeOn(Schedulers.boundedElastic())
-                .doOnNext(this::triggerSse)
-                .then();
+                .map(gameId -> {
+                    triggerSse(gameService.loadCurrentGames());
+                    return gameId;
+                });
     }
 
-    @GetMapping("/joinGame/gameId/{gameId}/name/{name}")
-    public Mono<ResponseEntity<Object>> joinGame(@PathVariable Long gameId, @PathVariable String name) {
-        return Mono.fromCallable(() -> {
-            boolean result = gameService.joinGame(gameId, name);
-            if (!result) {
-                return ResponseEntity.unprocessableEntity().build();
-            }
-            return ResponseEntity.ok().build();
-        }).subscribeOn(Schedulers.boundedElastic());
+    @GetMapping("/joinGame/gameId/{gameId}/player/{player}/name/{name}")
+    public Mono<ResponseEntity<Object>> joinGame(@PathVariable Long gameId, @PathVariable Player player,
+                                                 @PathVariable String name) {
+
+        return Mono.fromCallable(() -> gameService.joinGame(gameId, player, name))
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(success -> {
+                    if (success) {
+                        triggerSse(gameService.loadCurrentGames());
+                        return ResponseEntity.ok().build();
+                    } else {
+                        return ResponseEntity.unprocessableEntity().build();
+                    }
+                });
     }
 
     private void triggerSse(List<Game> gameList) {
-        ServerSentEvent<List<GameWs>> event = ServerSentEvent.<List<GameWs>>builder()
+        ServerSentEvent<List<GameOnlyWs>> event = ServerSentEvent.<List<GameOnlyWs>>builder()
                 .id(String.valueOf(System.currentTimeMillis()))
                 .event("message")
-                .data(gameList.stream().map(GameWs::new).toList())
+                .data(gameList.stream().map(GameOnlyWs::new).toList())
                 .build();
         sink.tryEmitNext(event);
     }

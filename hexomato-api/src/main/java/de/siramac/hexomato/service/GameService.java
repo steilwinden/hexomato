@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static de.siramac.hexomato.domain.Player.PLAYER_1;
+import static de.siramac.hexomato.domain.Player.PLAYER_2;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -17,23 +20,24 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
-    public void createGame(Player player, String name) {
+    public Long createGame(Player player, String name) {
         Game game = new Game(player, name);
-        gameRepository.saveGame(game);
+        game = gameRepository.saveGame(game);
+        return game.getId();
     }
 
     public List<Game> loadCurrentGames() {
         return gameRepository.loadCurrentGames();
     }
 
-    public synchronized boolean joinGame(Long gameId, String name) {
+    public synchronized boolean joinGame(Long gameId, Player player, String name) {
         Game game = gameRepository.loadGame(gameId);
         if (game == null) {
             return false;
         }
-        if (game.getNamePlayer1() == null) {
+        if (player == PLAYER_1) {
             game.setNamePlayer1(name);
-        } else if (game.getNamePlayer2() == null) {
+        } else if (player == PLAYER_2) {
             game.setNamePlayer2(name);
         }
         gameRepository.saveGame(game);

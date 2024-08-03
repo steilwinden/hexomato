@@ -1,4 +1,7 @@
 import {Player} from "./player.enum";
+import {Node as NodeAlias} from './node';
+
+type Node = NodeAlias;
 
 export interface Game {
   id: bigint;
