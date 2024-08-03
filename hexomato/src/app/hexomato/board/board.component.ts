@@ -8,7 +8,6 @@ import {environment} from "../../../environments/environment";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {tap} from "rxjs";
 import {Player} from "../shared/player.enum";
-import {Router} from "@angular/router";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatListItem, MatListItemIcon} from "@angular/material/list";
@@ -33,7 +32,7 @@ export class BoardComponent implements OnInit {
   grid: any[] = [];
   destroyRef: DestroyRef = inject(DestroyRef);
 
-  constructor(private router: Router, private sseService: SseService, public gameService: GameService) {
+  constructor(private sseService: SseService, public gameService: GameService) {
   }
 
   ngOnInit() {
@@ -102,12 +101,6 @@ export class BoardComponent implements OnInit {
     } else {
       return `${X7},${Y7} ${X9},${Y9} ${X1},${Y1} ${X4},${Y4}`;
     }
-  }
-
-  quitClick(): void {
-    sessionStorage.removeItem('gameId');
-    sessionStorage.removeItem('player');
-    this.router.navigate(['/']).then();
   }
 
 }

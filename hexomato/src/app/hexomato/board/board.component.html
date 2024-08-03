@@ -1,5 +1,4 @@
-<div class="board-container">
-  <div class="board">
+ <div class="board">
     <svg class="polygone-svg" xmlns="http://www.w3.org/2000/svg">
       <polygon class="polygon-player-1" [attr.points]="polygonPoints(0)"/>
       <polygon class="polygon-player-2" [attr.points]="polygonPoints(1)"/>
@@ -48,9 +47,3 @@
       }
     </div>
   </div>
-  <button class="quit-button" mat-raised-button (click)="quitClick()">
-    <mat-list-item>
-      <mat-icon matListItemIcon>logout</mat-icon>
-    </mat-list-item>
-  </button>
-</div>

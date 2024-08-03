@@ -51,7 +51,7 @@ export class SetupComponent implements OnInit {
 
     this.games$ = this.sseService.getSetupEvents(`${environment.apiBaseUrl}/ws/setup/register/sse`).pipe(
       tap(games => games.find(game =>
-        this.findGameReadyForPlaying(game) && this.router.navigate(['/board'])
+        this.findGameReadyForPlaying(game) && this.router.navigate(['/game'])
       )),
       map(games => games.filter(game => game.namePlayer1 !== null || game.namePlayer2 !== null))
     );
@@ -82,7 +82,7 @@ export class SetupComponent implements OnInit {
       })
     ).subscribe(() => {
       }
-      // this.router.navigate(['/board'])
+      // this.router.navigate(['/game'])
     );
 
     this.anyButtonClicked$.next(true);
