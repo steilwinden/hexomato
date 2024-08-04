@@ -22,7 +22,8 @@ import java.util.List;
 @RequestMapping("/ws/setup")
 public class SetupController {
 
-    private final Sinks.Many<ServerSentEvent<List<GameOnlyWs>>> sink = Sinks.many().replay().all();
+        private final Sinks.Many<ServerSentEvent<List<GameOnlyWs>>> sink = Sinks.many().replay().all();
+//    private final Sinks.Many<ServerSentEvent<List<GameOnlyWs>>> sink = Sinks.many().multicast().onBackpressureBuffer();
     private final GameService gameService;
 
     public SetupController(GameService gameService) {
@@ -64,7 +65,6 @@ public class SetupController {
 
     private void triggerSse(List<Game> gameList) {
         ServerSentEvent<List<GameOnlyWs>> event = ServerSentEvent.<List<GameOnlyWs>>builder()
-                .id(String.valueOf(System.currentTimeMillis()))
                 .event("message")
                 .data(gameList.stream().map(GameOnlyWs::new).toList())
                 .build();

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {GameService} from "../shared/game.service";
 import {Node} from "../shared/node";
 import {Player} from "../shared/player.enum";
@@ -12,28 +12,33 @@ import {Player} from "../shared/player.enum";
 })
 export class HexagonComponent {
 
-  @Input() hexNode!: Node;
+  @Input() node!: Node;
+  @Output() clicked = new EventEmitter<Event>();
 
   constructor(public gameService: GameService) {
   }
 
   getContentSvgClass() {
     const classes = ['content-svg'];
-    if (this.hexNode.player === null) {
+    if (this.node.player === null) {
       classes.push('empty');
-    } else if (this.hexNode.player === Player.PLAYER_1) {
+    } else if (this.node.player === Player.PLAYER_1) {
       classes.push('player-1');
-    } else if (this.hexNode.player === Player.PLAYER_2) {
+    } else if (this.node.player === Player.PLAYER_2) {
       classes.push('player-2');
     }
 
-    if (this.hexNode.lastMove) {
+    if (this.node.lastMove) {
       classes.push('lastMove');
     }
-    if (this.hexNode.partOfWinnerPath) {
+    if (this.node.partOfWinnerPath) {
       classes.push('blink');
     }
     return classes.join(' ');
+  }
+
+  hexagonClick() {
+    this.clicked.emit();
   }
 
 }

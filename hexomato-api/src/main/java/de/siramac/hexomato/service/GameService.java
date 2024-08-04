@@ -30,6 +30,10 @@ public class GameService {
         return gameRepository.loadCurrentGames();
     }
 
+    public Game loadGame(Long gameId) {
+        return gameRepository.loadGame(gameId);
+    }
+
     public synchronized boolean joinGame(Long gameId, Player player, String name) {
         Game game = gameRepository.loadGame(gameId);
         if (game == null) {
@@ -46,10 +50,14 @@ public class GameService {
 
     public Game makeMove(Long gameId, int row, int col, Player player) {
         Game game = gameRepository.loadGame(gameId);
+        if (game.getTurn() != player) {
+            return null;
+        }
         if (!isValidMove(game.getBoard(), row, col)) {
             return null;
         }
         game.getBoard()[row][col].setPlayer(player);
+        game.setTurn(game.getTurn() == PLAYER_1 ? PLAYER_2 : PLAYER_1);
         game = gameRepository.saveGame(game);
         return game;
     }

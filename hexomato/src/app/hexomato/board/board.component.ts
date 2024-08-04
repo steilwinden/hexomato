@@ -1,16 +1,12 @@
-import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {HexagonComponent} from "../hexagon/hexagon.component";
 import {GameService} from "../shared/game.service";
 import {Node} from "../shared/node";
-import {SseService} from "../shared/sse.service";
-import {environment} from "../../../environments/environment";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {tap} from "rxjs";
-import {Player} from "../shared/player.enum";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatListItem, MatListItemIcon} from "@angular/material/list";
+import {HexagonClickEvent} from "../shared/hexagon-click-event";
 
 @Component({
   selector: 'app-board',
@@ -27,42 +23,12 @@ import {MatListItem, MatListItemIcon} from "@angular/material/list";
   styleUrl: './board.component.scss'
 })
 
-export class BoardComponent implements OnInit {
+export class BoardComponent {
 
-  grid: any[] = [];
-  destroyRef: DestroyRef = inject(DestroyRef);
+  @Input() board!: Node[][];
+  @Output() clicked = new EventEmitter<HexagonClickEvent>();
 
-  constructor(private sseService: SseService, public gameService: GameService) {
-  }
-
-  ngOnInit() {
-    const storedGameId = sessionStorage.getItem('gameId');
-    const storedPlayer = sessionStorage.getItem('player');
-    console.log("storedGameId: " + storedGameId);
-    console.log("storedPlayer: " + storedPlayer);
-
-    this.createGrid();
-
-    this.sseService.getGameEvents(`${environment.apiBaseUrl}/api/register/sse`).pipe(
-      takeUntilDestroyed(this.destroyRef),
-      tap(e => console.log("sse-event = ", e))
-    ).subscribe();
-  }
-
-  createGrid() {
-    const size = 11; // Größe des Spielfelds
-    for (let row = 0; row < size; row++) {
-      this.grid[row] = [];
-      for (let col = 0; col < size; col++) {
-        this.grid[row].push({
-          row: 0,
-          col: 0,
-          lastMove: false,
-          partOfWinnerPath: false,
-          player: Player.PLAYER_1
-        } as Node);
-      }
-    }
+  constructor(public gameService: GameService) {
   }
 
   numToLetter(num: number): string {
@@ -70,27 +36,27 @@ export class BoardComponent implements OnInit {
   }
 
   polygonPoints(i: number): string {
-    let X1 = 20;
-    let Y1 = 30;
-    let X2 = 40;
-    let Y2 = 0;
-    let X3 = 725;
-    let Y3 = 0;
-    let X4 = 535;
-    let Y4 = 320;
+    const X1 = 20;
+    const Y1 = 30;
+    const X2 = 40;
+    const Y2 = 0;
+    const X3 = 725;
+    const Y3 = 0;
+    const X4 = 535;
+    const Y4 = 320;
 
-    let X5 = 1070;
-    let Y5 = 580;
-    let X6 = 1050;
-    let Y6 = 610;
+    const X5 = 1070;
+    const Y5 = 580;
+    const X6 = 1050;
+    const Y6 = 610;
 
-    let X7 = 340;
-    let Y7 = 640;
-    let X8 = 1030;
-    let Y8 = 640;
+    const X7 = 340;
+    const Y7 = 640;
+    const X8 = 1030;
+    const Y8 = 640;
 
-    let X9 = 0;
-    let Y9 = 60;
+    const X9 = 0;
+    const Y9 = 60;
 
     if (i === 0) {
       return `${X1},${Y1} ${X2} ${Y2} ${X3},${Y3} ${X4},${Y4}`;
@@ -101,6 +67,10 @@ export class BoardComponent implements OnInit {
     } else {
       return `${X7},${Y7} ${X9},${Y9} ${X1},${Y1} ${X4},${Y4}`;
     }
+  }
+
+  hexagonClicked(row: number, col: number) {
+    this.clicked.emit({row, col});
   }
 
 }

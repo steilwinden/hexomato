@@ -49,11 +49,11 @@ export class SetupComponent implements OnInit {
       map(([name, anyButtonClicked]) => name.length === 0 || anyButtonClicked)
     );
 
-    this.games$ = this.sseService.getSetupEvents(`${environment.apiBaseUrl}/ws/setup/register/sse`).pipe(
+    this.games$ = this.sseService.getEvents<Game[]>(`${environment.apiBaseUrl}/ws/setup/register/sse`).pipe(
       tap(games => games.find(game =>
         this.findGameReadyForPlaying(game) && this.router.navigate(['/game'])
       )),
-      map(games => games.filter(game => game.namePlayer1 !== null || game.namePlayer2 !== null))
+      map(games => games.filter(game => game.namePlayer1 == null || game.namePlayer2 == null))
     );
   }
 
@@ -65,24 +65,21 @@ export class SetupComponent implements OnInit {
   createGameClick(player: Player): void {
     this.apiService.createGame(player, this.name$.getValue()).pipe(
       takeUntilDestroyed(this.destroyRef),
-      tap(gameId => {
-        sessionStorage.setItem('gameId', gameId.toString());
-        sessionStorage.setItem('player', player);
-      })
-    ).subscribe();
+    ).subscribe((gameId) => {
+      sessionStorage.setItem('gameId', gameId.toString());
+      sessionStorage.setItem('player', player);
+    });
     this.anyButtonClicked$.next(true);
   }
 
   joinGameClick(gameId: bigint, player: Player): void {
     this.apiService.joinGame(gameId, player, this.name$.getValue()).pipe(
       takeUntilDestroyed(this.destroyRef),
-      tap(() => {
+    ).subscribe(() => {
         sessionStorage.setItem('gameId', gameId.toString());
         sessionStorage.setItem('player', player);
-      })
-    ).subscribe(() => {
+        // this.router.navigate(['/game'])
       }
-      // this.router.navigate(['/game'])
     );
 
     this.anyButtonClicked$.next(true);

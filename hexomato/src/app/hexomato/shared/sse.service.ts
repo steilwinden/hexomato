@@ -1,7 +1,5 @@
 import {Injectable, NgZone} from '@angular/core';
-import {Node} from "./node";
 import {Observable} from "rxjs";
-import {Game} from "./game";
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +9,14 @@ export class SseService {
   constructor(private zone: NgZone) {
   }
 
-  getSetupEvents(url: string): Observable<Game[]> {
+  getEvents<T>(url: string): Observable<T> {
     return new Observable(observer => {
       const eventSource = new EventSource(url);
 
       eventSource.onmessage = event => {
         this.zone.run(() => {
-          const gameList: Game[] = JSON.parse(event.data);
-          observer.next(gameList);
+          const data: T = JSON.parse(event.data);
+          observer.next(data);
         });
       };
 
@@ -32,27 +30,4 @@ export class SseService {
       };
     });
   }
-
-  getGameEvents(url: string): Observable<Node> {
-    return new Observable(observer => {
-      const eventSource = new EventSource(url);
-
-      eventSource.onmessage = event => {
-        this.zone.run(() => {
-          const hexNode: Node = JSON.parse(event.data);
-          observer.next(hexNode);
-        });
-      };
-
-      eventSource.onerror = error => {
-        observer.error(error);
-        eventSource.close();
-      };
-
-      return () => {
-        eventSource.close();
-      };
-    });
-  }
-
 }

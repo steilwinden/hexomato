@@ -1,0 +1,10 @@
+<div class="game">
+  @if (game$ | async; as game) {
+    <app-board [board]="game.board" (clicked)="hexagonClicked(game, $event)"></app-board>
+    <button class="quit-button" mat-raised-button (click)="quitClick()">
+      <mat-list-item>
+        <mat-icon matListItemIcon>logout</mat-icon>
+      </mat-list-item>
+    </button>
+  }
+</div>

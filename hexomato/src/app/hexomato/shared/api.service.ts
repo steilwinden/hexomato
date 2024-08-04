@@ -18,23 +18,32 @@ export class ApiService {
 
   createGame(player: Player, name: string): Observable<bigint> {
     const url = `${this.apiBaseUrl}/ws/setup/createGame/player/${player}/name/${name}`;
-    const basicAuth = 'Basic ' + btoa(`${this.apiUsername}:${this.apiPassword}`);
-
-    const headers = new HttpHeaders({
-      'Authorization': basicAuth
-    });
-
+    const headers = this.createBasicAuthHeader();
     return this.http.get<bigint>(url, {headers});
   }
 
   joinGame(gameId: bigint, player: Player, name: string): Observable<void> {
     const url = `${this.apiBaseUrl}/ws/setup/joinGame/gameId/${gameId}/player/${player}/name/${name}`;
-    const basicAuth = 'Basic ' + btoa(`${this.apiUsername}:${this.apiPassword}`);
+    const headers = this.createBasicAuthHeader();
+    return this.http.get<void>(url, {headers});
+  }
 
-    const headers = new HttpHeaders({
+  startGame(gameId: bigint): Observable<void> {
+    const url = `${this.apiBaseUrl}/ws/game/start/gameId/${gameId}`;
+    const headers = this.createBasicAuthHeader();
+    return this.http.get<void>(url, {headers});
+  }
+
+  makeMove(gameId: bigint, row: number, col: number, player: Player): Observable<void> {
+    const url = `${this.apiBaseUrl}/ws/game/makeMove/gameId/${gameId}/row/${row}/col/${col}/player/${player}`;
+    const headers = this.createBasicAuthHeader();
+    return this.http.get<void>(url, {headers});
+  }
+
+  private createBasicAuthHeader(): HttpHeaders {
+    const basicAuth = 'Basic ' + btoa(`${this.apiUsername}:${this.apiPassword}`);
+    return new HttpHeaders({
       'Authorization': basicAuth
     });
-
-    return this.http.get<void>(url, {headers});
   }
 }

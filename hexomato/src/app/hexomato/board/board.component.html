@@ -6,43 +6,43 @@
       <polygon class="polygon-player-2" [attr.points]="polygonPoints(3)"/>
     </svg>
     <div class="hexagons">
-      @for (row of grid; let rowIndex = $index; track rowIndex) {
+      @for (rowNode of board; let row = $index; track row) {
         <div class="hex-row"
-             [style.left.px]="rowIndex * gameService.hexDiameter/2"
-             [style.top.px]="rowIndex === 0 ? -24 : rowIndex * 50">
+             [style.left.px]="row * gameService.hexDiameter/2"
+             [style.top.px]="row === 0 ? -24 : row * 50">
 
           <div
-            [ngClass]="{'caption-left': true, 'caption-first': rowIndex === 0}">{{ rowIndex + 1 }}
+            [ngClass]="{'caption-left': true, 'caption-first': row === 0}">{{ row + 1 }}
           </div>
 
           <!-- oberste Reihe -->
-          @if (rowIndex === 0) {
-            @for (col of row; let colIndex = $index; track colIndex) {
+          @if (row === 0) {
+            @for (colNode of rowNode; let col = $index; track col) {
               <div>
-                <div class="caption-top">{{ numToLetter(colIndex + 1) }}</div>
-                <app-hexagon [hexNode]="col"></app-hexagon>
+                <div class="caption-top">{{ numToLetter(col + 1) }}</div>
+                <app-hexagon [node]="colNode" (clicked)="hexagonClicked(row, col)"></app-hexagon>
               </div>
             }
           }
 
           <!-- mittlere Reihen -->
-          @if (rowIndex !== 0 && rowIndex !== grid.length - 1) {
-            @for (col of row; track $index) {
-              <app-hexagon [hexNode]="col"></app-hexagon>
+          @if (row !== 0 && row !== board.length - 1) {
+            @for (colNode of rowNode; let col = $index; track col) {
+              <app-hexagon [node]="colNode" (clicked)="hexagonClicked(row, col)"></app-hexagon>
             }
           }
 
           <!-- unterste Reihe -->
-          @if (rowIndex === grid.length - 1) {
-            @for (col of row; let colIndex = $index; track colIndex) {
+          @if (row === board.length - 1) {
+            @for (colNode of rowNode; let col = $index; track col) {
               <div>
-                <app-hexagon [hexNode]="col"></app-hexagon>
-                <div class="caption-bottom">{{ numToLetter(colIndex + 1) }}</div>
+                <app-hexagon [node]="colNode" (clicked)="hexagonClicked(row, col)"></app-hexagon>
+                <div class="caption-bottom">{{ numToLetter(col + 1) }}</div>
               </div>
             }
           }
 
-          <div [ngClass]="{'caption-right': true, 'caption-first': rowIndex === 0}">{{ rowIndex + 1 }}</div>
+          <div [ngClass]="{'caption-right': true, 'caption-first': row === 0}">{{ row + 1 }}</div>
         </div>
       }
     </div>
