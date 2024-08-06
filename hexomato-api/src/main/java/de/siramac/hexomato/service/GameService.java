@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static de.siramac.hexomato.domain.Game.BOARD_SIZE;
 import static de.siramac.hexomato.domain.Player.PLAYER_1;
 import static de.siramac.hexomato.domain.Player.PLAYER_2;
 
@@ -50,19 +51,27 @@ public class GameService {
 
     public Game makeMove(Long gameId, int row, int col, Player player) {
         Game game = gameRepository.loadGame(gameId);
-        if (game.getTurn() != player) {
+        if (!isValidMove(game, row, col, player)) {
             return null;
         }
-        if (!isValidMove(game.getBoard(), row, col)) {
-            return null;
-        }
-        game.getBoard()[row][col].setPlayer(player);
+        setMoveOnBoard(game.getBoard(), row, col, player);
+
         game.setTurn(game.getTurn() == PLAYER_1 ? PLAYER_2 : PLAYER_1);
         game = gameRepository.saveGame(game);
         return game;
     }
 
-    private boolean isValidMove(Node[][] board, int row, int col) {
-        return board[row][col].getPlayer() == null;
+    private static void setMoveOnBoard(Node[][] board, int row, int col, Player player) {
+        board[row][col].setPlayer(player);
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                board[i][j].setLastMove(false);
+            }
+        }
+        board[row][col].setLastMove(true);
+    }
+
+    private boolean isValidMove(Game game, int row, int col, Player player) {
+        return game.getTurn() == player && game.getBoard()[row][col].getPlayer() == null;
     }
 }

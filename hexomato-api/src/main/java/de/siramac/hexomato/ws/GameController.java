@@ -31,34 +31,27 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @GetMapping(value = "/register/sse/gameId/{gameId}", produces = "text/event-stream")
-    public Flux<ServerSentEvent<GameWs>> registerSse(@PathVariable Long gameId) {
+    @GetMapping(value = "/register/sse/gameId/{gameId}/namePlayer/{namePlayer}", produces = "text/event-stream")
+    public Flux<ServerSentEvent<GameWs>> registerSse(@PathVariable Long gameId, @PathVariable String namePlayer) {
         Sinks.Many<ServerSentEvent<GameWs>> sink = gameIdToSinkMap
 //                .computeIfAbsent(gameId, id -> Sinks.many().multicast().onBackpressureBuffer());
                 .computeIfAbsent(gameId, id -> Sinks.many().replay().all());
+
         return sink.asFlux()
-                .doOnSubscribe(subscription -> log.info("client connected"))
-                .doOnCancel(() -> log.info("client disconnected"));
+                .doOnSubscribe(subscription -> {
+                    log.info("{} connected", namePlayer);
+                    sendGameWithMessage(gameId, "");
+                })
+                .doOnCancel(() -> {
+                    log.info("{} disconnected", namePlayer);
+                    sendGameWithMessage(gameId, namePlayer + " has left the game");
+                });
     }
 
-    @GetMapping("/start/gameId/{gameId}")
-    public Mono<ResponseEntity<Object>> startGame(@PathVariable Long gameId) {
+    private Mono<Game> loadGame(Long gameId) {
         return Mono.fromCallable(() -> gameService.loadGame(gameId))
-                .subscribeOn(Schedulers.boundedElastic())
-                .map(game -> {
-                    triggerSse(game);
-                    return ResponseEntity.ok().build();
-                }).defaultIfEmpty(ResponseEntity.unprocessableEntity().build());
+                .subscribeOn(Schedulers.boundedElastic());
     }
-//    @PostConstruct
-//    public void scheduleTriggerEvent() {
-//        Flux.interval(Duration.ofSeconds(1))
-//                .flatMap(tick -> {
-//                    triggerEvent(Player.PLAYER_1, tick);
-//                    return Flux.empty();
-//                })
-//                .subscribe();
-//    }
 
     @GetMapping("/makeMove/gameId/{gameId}/row/{row}/col/{col}/player/{player}")
     public Mono<ResponseEntity<Object>> makeMove(@PathVariable Long gameId, @PathVariable int row, @PathVariable int col,
@@ -66,16 +59,25 @@ public class GameController {
         return Mono.fromCallable(() -> gameService.makeMove(gameId, row, col, player))
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(game -> {
-                    triggerSse(game);
+                    sendGame(game);
                     return ResponseEntity.ok().build();
                 })
                 .defaultIfEmpty(ResponseEntity.unprocessableEntity().build());
     }
 
-    private void triggerSse(Game game) {
+    private void sendGameWithMessage(Long gameId, String connectionMessage) {
+        loadGame(gameId).subscribe(game -> triggerSse(game, connectionMessage));
+    }
+
+    private void sendGame(Game game) {
+        triggerSse(game, "");
+    }
+
+    private void triggerSse(Game game, String connectionMessage) {
+        GameWs gameWs = new GameWs(game, connectionMessage);
         ServerSentEvent<GameWs> event = ServerSentEvent.<GameWs>builder()
                 .event("message")
-                .data(new GameWs(game))
+                .data(gameWs)
                 .build();
         gameIdToSinkMap.get(game.getId()).tryEmitNext(event);
     }

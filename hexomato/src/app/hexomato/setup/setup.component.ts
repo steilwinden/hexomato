@@ -68,6 +68,7 @@ export class SetupComponent implements OnInit {
     ).subscribe((gameId) => {
       sessionStorage.setItem('gameId', gameId.toString());
       sessionStorage.setItem('player', player);
+      sessionStorage.setItem('namePlayer', this.name$.getValue());
     });
     this.anyButtonClicked$.next(true);
   }
@@ -78,7 +79,8 @@ export class SetupComponent implements OnInit {
     ).subscribe(() => {
         sessionStorage.setItem('gameId', gameId.toString());
         sessionStorage.setItem('player', player);
-        // this.router.navigate(['/game'])
+        sessionStorage.setItem('namePlayer', this.name$.getValue());
+        this.router.navigate(['/game']).then();
       }
     );
 

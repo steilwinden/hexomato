@@ -17,20 +17,21 @@ public class GameWs {
     private final Player winner;
     @SuppressWarnings("MismatchedReadAndWriteOfArray")
     private final NodeWs[][] board;
+    private final String connectionMessage;
 
-    public GameWs(Game game) {
+    public GameWs(Game game, String connectionMessage) {
         this.id = game.getId();
         this.namePlayer1 = game.getNamePlayer1();
         this.namePlayer2 = game.getNamePlayer2();
         this.turn = game.getTurn();
         this.winner = game.getWinner();
-        board = new NodeWs[BOARD_SIZE][BOARD_SIZE];
 
+        board = new NodeWs[BOARD_SIZE][BOARD_SIZE];
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 board[row][col] = new NodeWs(game.getBoard()[row][col]);
             }
         }
-
+        this.connectionMessage = connectionMessage;
     }
 }

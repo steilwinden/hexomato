@@ -7,6 +7,15 @@
   height: 100%;
   padding-bottom: 150px;
 
+  .connection-message {
+    width: 100%;
+    margin: 20px;
+    font-size: 36px;
+    text-align: center;
+    color: var(--mdc-protected-button-label-text-color);
+    background-color: #333333;
+  }
+
   .quit-button {
     position: absolute;
     bottom: 50px;

@@ -10,4 +10,5 @@ export interface Game {
   turn: Player;
   winner: Player;
   board: Node[][];
+  connectionMessage: string;
 }

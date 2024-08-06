@@ -1,6 +1,11 @@
 <div class="game">
   @if (game$ | async; as game) {
     <app-board [board]="game.board" (clicked)="hexagonClicked(game, $event)"></app-board>
+
+    @if(connectionMessage$ | async; as connectionMessage) {
+      <div class="connection-message">{{connectionMessage}}</div>
+    }
+
     <button class="quit-button" mat-raised-button (click)="quitClick()">
       <mat-list-item>
         <mat-icon matListItemIcon>logout</mat-icon>

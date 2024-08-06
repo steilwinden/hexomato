@@ -28,12 +28,6 @@ export class ApiService {
     return this.http.get<void>(url, {headers});
   }
 
-  startGame(gameId: bigint): Observable<void> {
-    const url = `${this.apiBaseUrl}/ws/game/start/gameId/${gameId}`;
-    const headers = this.createBasicAuthHeader();
-    return this.http.get<void>(url, {headers});
-  }
-
   makeMove(gameId: bigint, row: number, col: number, player: Player): Observable<void> {
     const url = `${this.apiBaseUrl}/ws/game/makeMove/gameId/${gameId}/row/${row}/col/${col}/player/${player}`;
     const headers = this.createBasicAuthHeader();
