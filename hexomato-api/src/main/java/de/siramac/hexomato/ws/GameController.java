@@ -23,7 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/ws/game")
 public class GameController {
 
-    //    private final Sinks.Many<ServerSentEvent<GameWs>> sink = Sinks.many().replay().all();
     private final Map<Long, Sinks.Many<ServerSentEvent<GameWs>>> gameIdToSinkMap = new ConcurrentHashMap<>();
     private final GameService gameService;
 
@@ -48,11 +47,6 @@ public class GameController {
                 });
     }
 
-    private Mono<Game> loadGame(Long gameId) {
-        return Mono.fromCallable(() -> gameService.loadGame(gameId))
-                .subscribeOn(Schedulers.boundedElastic());
-    }
-
     @GetMapping("/makeMove/gameId/{gameId}/row/{row}/col/{col}/player/{player}")
     public Mono<ResponseEntity<Object>> makeMove(@PathVariable Long gameId, @PathVariable int row, @PathVariable int col,
                                                  @PathVariable Player player) {
@@ -66,7 +60,9 @@ public class GameController {
     }
 
     private void sendGameWithMessage(Long gameId, String connectionMessage) {
-        loadGame(gameId).subscribe(game -> triggerSse(game, connectionMessage));
+        Mono.fromCallable(() -> gameService.loadGame(gameId))
+                .subscribeOn(Schedulers.boundedElastic())
+                .subscribe(game -> triggerSse(game, connectionMessage));
     }
 
     private void sendGame(Game game) {

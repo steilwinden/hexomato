@@ -39,8 +39,8 @@ export class SetupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form.get('name')!.valueChanges.pipe()
-      .subscribe(value => this.name$.next(value));
+    this.form.get('name')!.valueChanges.pipe().subscribe(value => this.name$.next(value));
+    this.form.get('name')!.setValue(sessionStorage.getItem('namePlayer'));
 
     this.buttonsDisabled$ = combineLatest([
       this.name$,
@@ -51,7 +51,7 @@ export class SetupComponent implements OnInit {
 
     this.games$ = this.sseService.getEvents<Game[]>(`${environment.apiBaseUrl}/ws/setup/register/sse`).pipe(
       tap(games => games.find(game =>
-        this.findGameReadyForPlaying(game) && this.router.navigate(['/game'])
+        this.findGameReadyForPlaying(game) && this.navigateToGame()
       )),
       map(games => games.filter(game => game.namePlayer1 == null || game.namePlayer2 == null))
     );
@@ -67,8 +67,8 @@ export class SetupComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef),
     ).subscribe((gameId) => {
       sessionStorage.setItem('gameId', gameId.toString());
-      sessionStorage.setItem('player', player);
       sessionStorage.setItem('namePlayer', this.name$.getValue());
+      sessionStorage.setItem('player', player);
     });
     this.anyButtonClicked$.next(true);
   }
@@ -78,13 +78,25 @@ export class SetupComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef),
     ).subscribe(() => {
         sessionStorage.setItem('gameId', gameId.toString());
-        sessionStorage.setItem('player', player);
         sessionStorage.setItem('namePlayer', this.name$.getValue());
-        this.router.navigate(['/game']).then();
+        sessionStorage.setItem('player', player);
+        this.navigateToGame();
       }
     );
 
     this.anyButtonClicked$.next(true);
+  }
+
+  navigateToGame(): void {
+    this.router.navigate(['/game'],
+      {
+        queryParams: {
+          gameId: sessionStorage.getItem('gameId'),
+          namePlayer: sessionStorage.getItem('namePlayer'),
+          player: sessionStorage.getItem('player')
+        }
+      }
+    ).then();
   }
 
   protected readonly Player = Player;

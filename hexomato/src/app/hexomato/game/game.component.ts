@@ -3,7 +3,7 @@ import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatListItem, MatListItemIcon} from "@angular/material/list";
 import {BoardComponent} from "../board/board.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
 import {debounceTime, distinctUntilChanged, map, Observable} from "rxjs";
 import {SseService} from "../shared/sse.service";
@@ -37,23 +37,27 @@ export class GameComponent implements OnInit {
   namePlayer!: string;
   destroyRef: DestroyRef = inject(DestroyRef);
 
-  constructor(private router: Router, private sseService: SseService, private apiService: ApiService) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private sseService: SseService,
+              private apiService: ApiService) {
   }
 
   ngOnInit() {
-    this.gameId = BigInt(sessionStorage.getItem('gameId')!);
-    this.player = sessionStorage.getItem('player') as Player;
-    this.namePlayer = sessionStorage.getItem('namePlayer') as string;
+    this.activatedRoute.queryParamMap.subscribe(paramMap => {
+      this.gameId = BigInt(paramMap.get('gameId')!);
+      this.namePlayer = paramMap.get('namePlayer') as string;
+      this.player = paramMap.get('player') as Player;
 
-    this.game$ = this.sseService.getEvents<Game>(
-      `${environment.apiBaseUrl}/ws/game/register/sse/gameId/${this.gameId}/namePlayer/${this.namePlayer}`
-    );
+      this.game$ = this.sseService.getEvents<Game>(
+        `${environment.apiBaseUrl}/ws/game/register/sse/gameId/${this.gameId}/namePlayer/${this.namePlayer}`
+      );
 
-    this.connectionMessage$ = this.game$.pipe(
-      map(game => game.connectionMessage),
-      distinctUntilChanged(),
-      debounceTime(3000)
-    );
+      // short disconnections (when pressing F5) will be suppressed
+      this.connectionMessage$ = this.game$.pipe(
+        map(game => game.connectionMessage),
+        debounceTime(3000),
+        distinctUntilChanged()
+      );
+    });
   }
 
   hexagonClicked(game: Game, event: HexagonClickEvent): void {
