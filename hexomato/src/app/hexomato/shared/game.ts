@@ -8,7 +8,7 @@ export interface Game {
   namePlayer1: string | null;
   namePlayer2: string | null;
   turn: Player;
-  winner: Player;
+  winner: Player | null;
   board: Node[][];
   connectionMessage: string;
 }

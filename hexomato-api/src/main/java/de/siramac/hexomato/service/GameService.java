@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 
 import static de.siramac.hexomato.domain.Game.BOARD_SIZE;
 import static de.siramac.hexomato.domain.Player.PLAYER_1;
@@ -51,27 +51,82 @@ public class GameService {
 
     public Game makeMove(Long gameId, int row, int col, Player player) {
         Game game = gameRepository.loadGame(gameId);
-        if (!isValidMove(game, row, col, player)) {
+        Node node = game.getBoard()[row][col];
+        if (!isValidMove(game, node, player)) {
             return null;
         }
-        setMoveOnBoard(game.getBoard(), row, col, player);
+        makeMoveOnBoard(game.getBoard(), node, player);
 
-        game.setTurn(game.getTurn() == PLAYER_1 ? PLAYER_2 : PLAYER_1);
+        Set<Node> winnerPath = findWinnerPath(game.getBoard(), node, player);
+        if (!winnerPath.isEmpty()) {
+            for (Node winnerNode : winnerPath) {
+                winnerNode.setPartOfWinnerPath(true);
+            }
+            game.setWinner(player);
+        } else {
+            game.setTurn(game.getTurn() == PLAYER_1 ? PLAYER_2 : PLAYER_1);
+        }
         game = gameRepository.saveGame(game);
         return game;
     }
 
-    private static void setMoveOnBoard(Node[][] board, int row, int col, Player player) {
-        board[row][col].setPlayer(player);
+    private void makeMoveOnBoard(Node[][] board, Node node, Player player) {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 board[i][j].setLastMove(false);
             }
         }
-        board[row][col].setLastMove(true);
+        node.setLastMove(true);
+        node.setPlayer(player);
     }
 
-    private boolean isValidMove(Game game, int row, int col, Player player) {
-        return game.getTurn() == player && game.getBoard()[row][col].getPlayer() == null;
+    private boolean isValidMove(Game game, Node node, Player player) {
+        return game.getWinner() == null && game.getTurn() == player && node.getPlayer() == null;
+    }
+
+    private Set<Node> findWinnerPath(Node[][] board, Node node, Player player) {
+        Set<Node> visited = breadthFirstSearch(board, node);
+        boolean containsRowMin = false;
+        boolean containsRowMax = false;
+        boolean containsColMin = false;
+        boolean containsColMax = false;
+
+        for (Node v : visited) {
+            if (v.getRow() == 0) {
+                containsRowMin = true;
+            } else if (v.getRow() == BOARD_SIZE - 1) {
+                containsRowMax = true;
+            } else if (v.getCol() == 0) {
+                containsColMin = true;
+            } else if (v.getCol() == BOARD_SIZE - 1) {
+                containsColMax = true;
+            }
+        }
+        if (player == PLAYER_1 && containsRowMin && containsRowMax) {
+            return visited;
+        } else if (player == PLAYER_2 && containsColMin && containsColMax) {
+            return visited;
+        }
+        return Collections.emptySet();
+    }
+
+
+    public Set<Node> breadthFirstSearch(Node[][] board, Node start) {
+        Queue<Node> queue = new LinkedList<>();
+        Set<Node> visited = new HashSet<>();
+        queue.add(start);
+        visited.add(start);
+
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+
+            for (Node neighbor : current.getNeighbours(board)) {
+                if (!visited.contains(neighbor)) {
+                    queue.add(neighbor);
+                    visited.add(neighbor);
+                }
+            }
+        }
+        return visited;
     }
 }

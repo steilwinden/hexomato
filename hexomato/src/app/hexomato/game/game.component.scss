@@ -7,13 +7,40 @@
   height: 100%;
   padding-bottom: 150px;
 
-  .connection-message {
+  .name {
+    width: 100%;
+    margin-bottom: 20px;
+    margin-right: 170px;
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .player-1 {
+    color: var(--color-player-1);
+  }
+
+  .player-2 {
+    color: var(--color-player-2);
+  }
+
+  .messages {
     width: 100%;
     margin: 20px;
+    padding: 10px;
     font-size: 36px;
     text-align: center;
     color: var(--mdc-protected-button-label-text-color);
     background-color: #333333;
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .blink {
+      animation: blink 1.5s ease 10;
+    }
   }
 
   .quit-button {

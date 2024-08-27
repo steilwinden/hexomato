@@ -54,10 +54,32 @@ export class GameComponent implements OnInit {
       // short disconnections (when pressing F5) will be suppressed
       this.connectionMessage$ = this.game$.pipe(
         map(game => game.connectionMessage),
-        debounceTime(3000),
+        debounceTime(2000),
         distinctUntilChanged()
       );
     });
+  }
+
+  getInfoMessage(game: Game): string {
+    if (game.winner === Player.PLAYER_1) {
+      return `${game.namePlayer1} won!`;
+    } else if (game.winner === Player.PLAYER_2) {
+      return `${game.namePlayer2} won!`;
+    }
+
+    if (game.turn === Player.PLAYER_1) {
+      return `${this.addApostropheIfNeeded(game.namePlayer1!)} turn`;
+    } else if (game.turn === Player.PLAYER_2) {
+      return `${this.addApostropheIfNeeded(game.namePlayer2!)} turn`;
+    }
+    return "";
+  }
+
+  private addApostropheIfNeeded(s: string): string {
+    if (s.endsWith('s') || s.endsWith('ß') || s.endsWith('x') || s.endsWith('z')) {
+      return `${s}'`;
+    }
+    return `${s}'s`;
   }
 
   hexagonClicked(game: Game, event: HexagonClickEvent): void {
@@ -72,7 +94,7 @@ export class GameComponent implements OnInit {
   }
 
   private isValidMove(game: Game, row: number, col: number): boolean {
-    return game.turn === this.player && game.board[row][col].player === null;
+    return game.winner === null && game.turn === this.player && game.board[row][col].player === null;
   }
 
   private setMoveOnBoard(game: Game, row: number, col: number, player: Player): void {
@@ -89,6 +111,16 @@ export class GameComponent implements OnInit {
     sessionStorage.removeItem('gameId');
     sessionStorage.removeItem('player');
     this.router.navigate(['/']).then();
+  }
+
+  getNamePlayerClass() {
+    const classes = ['name'];
+    if (this.player === Player.PLAYER_1) {
+      classes.push('player-1');
+    } else if (this.player === Player.PLAYER_2) {
+      classes.push('player-2');
+    }
+    return classes.join(' ');
   }
 
 }

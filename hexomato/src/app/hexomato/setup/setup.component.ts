@@ -39,8 +39,8 @@ export class SetupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form.get('name')!.valueChanges.pipe().subscribe(value => this.name$.next(value));
-    this.form.get('name')!.setValue(sessionStorage.getItem('namePlayer'));
+    this.form.get('name')?.valueChanges.pipe().subscribe(value => this.name$.next(value));
+    this.form.get('name')?.setValue(sessionStorage.getItem('namePlayer'));
 
     this.buttonsDisabled$ = combineLatest([
       this.name$,
