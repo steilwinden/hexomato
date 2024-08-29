@@ -51,6 +51,9 @@ public class GameService {
 
     public Game makeMove(Long gameId, int row, int col, Player player) {
         Game game = gameRepository.loadGame(gameId);
+        if (game == null) {
+            return null;
+        }
         Node node = game.getBoard()[row][col];
         if (!isValidMove(game, node, player)) {
             return null;
@@ -111,7 +114,7 @@ public class GameService {
     }
 
 
-    public Set<Node> breadthFirstSearch(Node[][] board, Node start) {
+    private Set<Node> breadthFirstSearch(Node[][] board, Node start) {
         Queue<Node> queue = new LinkedList<>();
         Set<Node> visited = new HashSet<>();
         queue.add(start);
@@ -128,5 +131,9 @@ public class GameService {
             }
         }
         return visited;
+    }
+
+    public void deleteOlderGames() {
+        gameRepository.deleteOlderGames();
     }
 }

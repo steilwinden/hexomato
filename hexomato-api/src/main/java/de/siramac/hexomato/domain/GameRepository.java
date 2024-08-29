@@ -9,4 +9,6 @@ public interface GameRepository {
     Game saveGame(Game game);
 
     List<Game> loadCurrentGames();
+
+    void deleteOlderGames();
 }

@@ -2,6 +2,7 @@ package de.siramac.hexomato.backend;
 
 import de.siramac.hexomato.backend.entity.GameEntity;
 import de.siramac.hexomato.backend.entity.GameEntityRepository;
+import de.siramac.hexomato.backend.entity.NodeEntityRepository;
 import de.siramac.hexomato.domain.Game;
 import de.siramac.hexomato.domain.GameRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,9 @@ import java.util.List;
 public class GameRepositoryImpl implements GameRepository {
 
     private final GameEntityRepository gameEntityRepository;
+    private final NodeEntityRepository nodeEntityRepository;
     private final GameMapper gameMapper;
+    private static final long TIMESPAN_IN_HOURS = 1;
 
     public Game loadGame(Long id) {
         GameEntity gameEntity = gameEntityRepository.findById(id).orElse(null);
@@ -24,8 +27,8 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     public List<Game> loadCurrentGames() {
-        Instant oneHourAgo = Instant.now().minus(1, ChronoUnit.HOURS);
-        List<GameEntity> gameEntityList = gameEntityRepository.findAllByCreatedOnAfter(oneHourAgo);
+        Instant pointInTime = Instant.now().minus(TIMESPAN_IN_HOURS, ChronoUnit.HOURS);
+        List<GameEntity> gameEntityList = gameEntityRepository.findAllByCreatedOnAfter(pointInTime);
         return gameEntityList.stream().map(gameMapper::map).toList();
     }
 
@@ -33,5 +36,11 @@ public class GameRepositoryImpl implements GameRepository {
         GameEntity gameEntity = gameMapper.map(game);
         gameEntity = gameEntityRepository.save(gameEntity);
         return gameMapper.map(gameEntity);
+    }
+
+    public void deleteOlderGames() {
+        Instant pointInTime = Instant.now().minus(TIMESPAN_IN_HOURS, ChronoUnit.HOURS);
+        nodeEntityRepository.deleteAllByCreatedOnBefore(pointInTime);
+        gameEntityRepository.deleteAllByCreatedOnBefore(pointInTime);
     }
 }

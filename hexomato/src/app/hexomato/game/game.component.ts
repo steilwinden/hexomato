@@ -113,14 +113,4 @@ export class GameComponent implements OnInit {
     this.router.navigate(['/']).then();
   }
 
-  getNamePlayerClass() {
-    const classes = ['name'];
-    if (this.player === Player.PLAYER_1) {
-      classes.push('player-1');
-    } else if (this.player === Player.PLAYER_2) {
-      classes.push('player-2');
-    }
-    return classes.join(' ');
-  }
-
 }

@@ -1,7 +1,10 @@
 <div class="game">
   @if (game$ | async; as game) {
-    <div [attr.class]="getNamePlayerClass()">
-      {{ namePlayer }}
+
+    <div class="players">
+      <span class="player-1">{{ game.namePlayer1 }}</span>
+      <span>&nbsp; vs &nbsp;</span>
+      <span class="player-2">{{ game.namePlayer2 }}</span>
     </div>
 
     <app-board [board]="game.board" (clicked)="hexagonClicked(game, $event)"></app-board>

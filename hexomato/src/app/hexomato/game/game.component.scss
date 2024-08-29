@@ -7,19 +7,22 @@
   height: 100%;
   padding-bottom: 150px;
 
-  .name {
+  .players {
+    position: relative;
+    left: 590px;
     width: 100%;
     margin-bottom: 20px;
-    margin-right: 170px;
-    font-size: 36px;
-    text-align: center;
+    font-size: 30px;
+    color: var(--mdc-protected-button-label-text-color);
   }
 
   .player-1 {
+    font-size: 48px;
     color: var(--color-player-1);
   }
 
   .player-2 {
+    font-size: 48px;
     color: var(--color-player-2);
   }
 
