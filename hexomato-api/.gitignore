@@ -35,3 +35,5 @@ build/
 /src/main/resources/db/dbhex.mv.db
 /src/main/resources/db/dbhex.lock.db
 /src/main/resources/db/dbhex.trace.db
+
+/src/main/resources/application-production.properties

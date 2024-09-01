@@ -5,13 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
-@ConditionalOnProperty("scheduling.enabled")
-public class SchedulingService {
+@ConditionalOnProperty("scheduler.enabled")
+public class Scheduler {
 
     private final GameService gameService;
 

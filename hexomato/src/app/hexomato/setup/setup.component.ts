@@ -46,7 +46,7 @@ export class SetupComponent implements OnInit {
       this.name$,
       this.anyButtonClicked$
     ]).pipe(
-      map(([name, anyButtonClicked]) => name.length === 0 || anyButtonClicked)
+      map(([name, anyButtonClicked]) => name?.length === 0 || anyButtonClicked)
     );
 
     this.games$ = this.sseService.getEvents<Game[]>(`${environment.apiBaseUrl}/ws/setup/register/sse`).pipe(
