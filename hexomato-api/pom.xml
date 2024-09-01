@@ -10,7 +10,7 @@
     </parent>
     <groupId>de.siramac</groupId>
     <artifactId>hexomato-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>hexomato-api</name>
     <description>Demo project for Spring Boot</description>
     <url/>
