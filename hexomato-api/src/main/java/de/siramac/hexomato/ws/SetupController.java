@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("/ws/setup")
 public class SetupController {
 
-    private final Sinks.Many<ServerSentEvent<List<GameOnlyWs>>> sink = Sinks.many().replay().all();
+    private final Sinks.Many<ServerSentEvent<List<GameOnlyWs>>> sink = Sinks.many().replay().latest();
     private final GameService gameService;
 
     public SetupController(GameService gameService) {

@@ -33,7 +33,7 @@ public class GameController {
     @GetMapping(value = "/register/sse/gameId/{gameId}/namePlayer/{namePlayer}", produces = "text/event-stream")
     public Flux<ServerSentEvent<GameWs>> registerSse(@PathVariable Long gameId, @PathVariable String namePlayer) {
         Sinks.Many<ServerSentEvent<GameWs>> sink = gameIdToSinkMap
-                .computeIfAbsent(gameId, id -> Sinks.many().replay().all());
+                .computeIfAbsent(gameId, id -> Sinks.many().replay().latest());
 
         return sink.asFlux()
                 .doOnSubscribe(subscription -> {

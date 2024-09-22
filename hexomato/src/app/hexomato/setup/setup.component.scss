@@ -4,10 +4,17 @@
   justify-content: center;
   align-items: center;
   margin-top: 48px;
+  margin-right: 20px;
+  margin-left: 20px;
 
-  .name-field {
-    width: 800px;
-    margin: 16px;
+  .name-div {
+    width: 100%;
+    text-align: center;
+
+    .name-field {
+      width: 100%;
+      margin-bottom: 16px;
+    }
   }
 
   .title {
