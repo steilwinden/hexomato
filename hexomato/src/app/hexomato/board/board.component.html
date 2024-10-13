@@ -1,49 +1,50 @@
- <div class="board">
-    <svg class="polygone-svg" xmlns="http://www.w3.org/2000/svg">
-      <polygon class="polygon-player-1" [attr.points]="polygonPoints(0)"/>
-      <polygon class="polygon-player-2" [attr.points]="polygonPoints(1)"/>
-      <polygon class="polygon-player-1" [attr.points]="polygonPoints(2)"/>
-      <polygon class="polygon-player-2" [attr.points]="polygonPoints(3)"/>
-    </svg>
-    <div class="hexagons">
-      @for (rowNode of board; let row = $index; track row) {
-        <div class="hex-row"
-             [style.left.px]="row * gameService.hexDiameter/2"
-             [style.top.px]="row === 0 ? -24 : row * 50">
+<div class="board"
+     [style.width.px]="gameService.boardWidth"
+     [style.height.px]="gameService.boardHeight">
+  <svg class="polygone-svg" xmlns="http://www.w3.org/2000/svg">
+    <polygon class="polygon-player-1" [attr.points]="polygonPoints(0)"/>
+    <polygon class="polygon-player-2" [attr.points]="polygonPoints(1)"/>
+    <polygon class="polygon-player-1" [attr.points]="polygonPoints(2)"/>
+    <polygon class="polygon-player-2" [attr.points]="polygonPoints(3)"/>
+  </svg>
+  <div class="hexagons">
 
-          <div
-            [ngClass]="{'caption-left': true, 'caption-first': row === 0}">{{ row + 1 }}
-          </div>
+    <!-- oberste Buchstabenreihe -->
+    <div class="hex-row position-top"
+         [style.left.px]="6"
+         [style.top.px]="-22">
+      @for (colNode of board[0]; let col = $index; track col) {
+        <div class="caption-top">{{ numToLetter(col + 1) }}</div>
+      }
+    </div>
 
-          <!-- oberste Reihe -->
-          @if (row === 0) {
-            @for (colNode of rowNode; let col = $index; track col) {
-              <div>
-                <div class="caption-top">{{ numToLetter(col + 1) }}</div>
-                <app-hexagon [node]="colNode" (clicked)="hexagonClicked(row, col)"></app-hexagon>
-              </div>
-            }
-          }
+    @for (rowNode of board; let row = $index; track row) {
+      <div class="hex-row"
+           [style.left.px]="row * gameService.hexDiameter/2"
+           [style.top.px]="row * gameService.hexDiameter * 5/6">
 
-          <!-- mittlere Reihen -->
-          @if (row !== 0 && row !== board.length - 1) {
-            @for (colNode of rowNode; let col = $index; track col) {
-              <app-hexagon [node]="colNode" (clicked)="hexagonClicked(row, col)"></app-hexagon>
-            }
-          }
-
-          <!-- unterste Reihe -->
-          @if (row === board.length - 1) {
-            @for (colNode of rowNode; let col = $index; track col) {
-              <div>
-                <app-hexagon [node]="colNode" (clicked)="hexagonClicked(row, col)"></app-hexagon>
-                <div class="caption-bottom">{{ numToLetter(col + 1) }}</div>
-              </div>
-            }
-          }
-
-          <div [ngClass]="{'caption-right': true, 'caption-first': row === 0}">{{ row + 1 }}</div>
+        <div
+          class="caption-left">{{ row + 1 }}
         </div>
+
+        <!-- Hexagonreihen -->
+        @if (row !== -1 && row !== -1) {
+          @for (colNode of rowNode; let col = $index; track col) {
+            <app-hexagon [node]="colNode" (clicked)="hexagonClicked(row, col)"></app-hexagon>
+          }
+        }
+
+        <div class="caption-right">{{ row + 1 }}</div>
+      </div>
+    }
+
+    <!-- unterste Buchstabenreihe -->
+    <div class="hex-row"
+         [style.left.px]="307"
+         [style.top.px]="576">
+      @for (colNode of board[0]; let col = $index; track col) {
+        <div class="caption-bottom">{{ numToLetter(col + 1) }}</div>
       }
     </div>
   </div>
+</div>

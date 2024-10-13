@@ -87,7 +87,7 @@ export class SetupComponent implements OnInit {
     this.anyButtonClicked$.next(true);
   }
 
-  navigateToGame(): void {
+  private navigateToGame(): void {
     this.router.navigate(['/game'],
       {
         queryParams: {

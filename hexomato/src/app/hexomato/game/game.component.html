@@ -7,13 +7,15 @@
       <span class="player-2">{{ game.namePlayer2 }}</span>
     </div>
 
-    <app-board [board]="game.board" (clicked)="hexagonClicked(game, $event)"></app-board>
+    <div>
+      <app-board [board]="game.board" (clicked)="hexagonClicked(game, $event)"></app-board>
 
-    <div class="messages">
-      <div [ngClass]="{'blink': game.winner !== null}">{{ getInfoMessage(game) }}</div>
-      @if (connectionMessage$ | async; as connectionMessage) {
-        <div>{{ connectionMessage }}</div>
-      }
+      <div class="messages">
+        <div [ngClass]="{'blink': game.winner !== null}">{{ getInfoMessage(game) }}</div>
+        @if (connectionMessage$ | async; as connectionMessage) {
+          <div>{{ connectionMessage }}</div>
+        }
+      </div>
     </div>
 
     <button class="quit-button" mat-raised-button (click)="quitClick()">

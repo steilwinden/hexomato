@@ -1,7 +1,5 @@
 .board {
   position: relative;
-  width: 1100px;
-  height: 660px;
 
   .polygone-svg {
     position: absolute;
@@ -28,10 +26,7 @@
     .hex-row {
       position: absolute;
       display: flex;
-
-      div.caption-first {
-        margin-top: 45px;
-      }
+      flex-direction: row;
 
       .caption-left {
         width: 25px;
@@ -41,19 +36,17 @@
       }
 
       .caption-top {
-        margin-left: 22px;
-        margin-bottom: 4px;
+        margin-left: 51px;
       }
 
       .caption-bottom {
-        margin-left: 22px;
+        margin-left: 51px;
       }
 
       .caption-right {
-        margin-top: 25px;
+        margin-top: 20px;
         margin-left: 10px;
       }
-
     }
   }
 }
