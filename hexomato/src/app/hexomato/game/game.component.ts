@@ -105,6 +105,7 @@ export class GameComponent implements OnInit {
       }
     }
     game.board[row][col].lastMove = true;
+    game.turn = player == Player.PLAYER_1 ? Player.PLAYER_2 : Player.PLAYER_1;
   }
 
   quitClick(): void {

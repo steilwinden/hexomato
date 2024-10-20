@@ -97,11 +97,14 @@ public class GameService {
         for (Node v : visited) {
             if (v.getRow() == 0) {
                 containsRowMin = true;
-            } else if (v.getRow() == BOARD_SIZE - 1) {
+            }
+            if (v.getRow() == BOARD_SIZE - 1) {
                 containsRowMax = true;
-            } else if (v.getCol() == 0) {
+            }
+            if (v.getCol() == 0) {
                 containsColMin = true;
-            } else if (v.getCol() == BOARD_SIZE - 1) {
+            }
+            if (v.getCol() == BOARD_SIZE - 1) {
                 containsColMax = true;
             }
         }

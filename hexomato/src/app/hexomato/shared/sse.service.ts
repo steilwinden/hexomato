@@ -14,8 +14,9 @@ export class SseService {
       const eventSource = new EventSource(url);
 
       eventSource.onmessage = event => {
+        const data: T = JSON.parse(event.data);
         this.zone.run(() => {
-          const data: T = JSON.parse(event.data);
+          console.log('data:', data);
           observer.next(data);
         });
       };

@@ -11,8 +11,9 @@
 }
 
 html, body {
-  width: 100%;
-  height: 100%;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
 }
 body {
   margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;

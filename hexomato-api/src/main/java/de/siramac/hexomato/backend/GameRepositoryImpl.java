@@ -19,7 +19,7 @@ public class GameRepositoryImpl implements GameRepository {
     private final GameEntityRepository gameEntityRepository;
     private final NodeEntityRepository nodeEntityRepository;
     private final GameMapper gameMapper;
-    private static final long TIMESPAN_IN_HOURS = 1;
+    private static final long TIMESPAN_IN_HOURS = 6;
 
     public Game loadGame(Long id) {
         GameEntity gameEntity = gameEntityRepository.findById(id).orElse(null);

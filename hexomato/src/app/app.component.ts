@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   getScaleStyle() {
     return {
       transform: `scale(${this.scale})`,
-      'transform-origin': 'center'
+      'transform-origin': 'center center'
     };
   }
 }
