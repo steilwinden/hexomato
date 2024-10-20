@@ -5,7 +5,7 @@ import {MatListItem, MatListItemIcon} from "@angular/material/list";
 import {BoardComponent} from "../board/board.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
-import {debounceTime, distinctUntilChanged, map, Observable} from "rxjs";
+import {debounceTime, distinctUntilChanged, map, Observable, shareReplay} from "rxjs";
 import {SseService} from "../shared/sse.service";
 import {Game} from "../shared/game";
 import {CommonModule} from "@angular/common";
@@ -49,6 +49,10 @@ export class GameComponent implements OnInit {
 
       this.game$ = this.sseService.getEvents<Game>(
         `${environment.apiBaseUrl}/ws/game/register/sse/gameId/${this.gameId}/namePlayer/${this.namePlayer}`
+      ).pipe(
+        // shareReplay(1) allows the game$ observable to be subscribed to just once,
+        // while the data is reused for all subsequent subscribers
+        shareReplay(1)
       );
 
       // short disconnections (when pressing F5) will be suppressed

@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
 import {NgStyle} from "@angular/common";
 import {GameService} from "./hexomato/shared/game.service";
 
@@ -13,7 +13,7 @@ import {GameService} from "./hexomato/shared/game.service";
 export class AppComponent implements OnInit {
   scale: number = 1;
 
-  constructor(public gameService: GameService) {
+  constructor(public gameService: GameService, private router: Router) {
   }
 
   ngOnInit() {
@@ -31,9 +31,11 @@ export class AppComponent implements OnInit {
   }
 
   getScaleStyle() {
+    const currentRoute = this.router.url;
+    const gameRoute = currentRoute.includes('/game');
     return {
       transform: `scale(${this.scale})`,
-      'transform-origin': 'center center'
+      'transform-origin': 'center ' + (gameRoute ? 'center' : 'top')
     };
   }
 }
