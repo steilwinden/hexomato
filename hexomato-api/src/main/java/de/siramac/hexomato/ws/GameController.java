@@ -52,7 +52,7 @@ public class GameController {
         return Mono.fromCallable(() -> gameService.makeMove(gameId, row, col, player))
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(game -> {
-                    sendGame(game);
+                    triggerSse(game, "");
                     return ResponseEntity.ok().build();
                 })
                 .defaultIfEmpty(ResponseEntity.unprocessableEntity().build());
@@ -62,10 +62,6 @@ public class GameController {
         Mono.fromCallable(() -> gameService.loadGame(gameId))
                 .subscribeOn(Schedulers.boundedElastic())
                 .subscribe(game -> triggerSse(game, connectionMessage));
-    }
-
-    private void sendGame(Game game) {
-        triggerSse(game, "");
     }
 
     private void triggerSse(Game game, String connectionMessage) {

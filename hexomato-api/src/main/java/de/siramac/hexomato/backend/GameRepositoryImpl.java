@@ -2,7 +2,6 @@ package de.siramac.hexomato.backend;
 
 import de.siramac.hexomato.backend.entity.GameEntity;
 import de.siramac.hexomato.backend.entity.GameEntityRepository;
-import de.siramac.hexomato.backend.entity.NodeEntityRepository;
 import de.siramac.hexomato.domain.Game;
 import de.siramac.hexomato.domain.GameRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import java.util.List;
 public class GameRepositoryImpl implements GameRepository {
 
     private final GameEntityRepository gameEntityRepository;
-    private final NodeEntityRepository nodeEntityRepository;
     private final GameMapper gameMapper;
     private static final long TIMESPAN_IN_HOURS = 6;
 
@@ -40,7 +38,6 @@ public class GameRepositoryImpl implements GameRepository {
 
     public void deleteOlderGames() {
         Instant pointInTime = Instant.now().minus(TIMESPAN_IN_HOURS, ChronoUnit.HOURS);
-        nodeEntityRepository.deleteAllByCreatedOnBefore(pointInTime);
         gameEntityRepository.deleteAllByCreatedOnBefore(pointInTime);
     }
 }

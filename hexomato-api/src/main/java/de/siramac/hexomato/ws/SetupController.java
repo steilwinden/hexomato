@@ -62,7 +62,7 @@ public class SetupController {
                 });
     }
 
-    private void triggerSse(List<Game> gameList) {
+    public void triggerSse(List<Game> gameList) {
         ServerSentEvent<List<GameOnlyWs>> event = ServerSentEvent.<List<GameOnlyWs>>builder()
                 .event("message")
                 .data(gameList.stream().map(GameOnlyWs::new).toList())
