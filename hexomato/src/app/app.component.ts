@@ -1,7 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {NgStyle} from "@angular/common";
-import {GameService} from "./hexomato/shared/game.service";
 
 @Component({
   selector: 'app-root',
@@ -11,9 +10,11 @@ import {GameService} from "./hexomato/shared/game.service";
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+
+  readonly appWidth: number = 1100;
   scale: number = 1;
 
-  constructor(public gameService: GameService, private router: Router) {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
@@ -27,7 +28,7 @@ export class AppComponent implements OnInit {
 
   private calculateScale() {
     const minDimension = Math.min(window.innerWidth, window.innerHeight);
-    this.scale = minDimension / this.gameService.boardWidth;
+    this.scale = minDimension / this.appWidth;
   }
 
   getScaleStyle() {

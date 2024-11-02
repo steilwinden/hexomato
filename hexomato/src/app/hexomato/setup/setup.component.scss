@@ -5,12 +5,13 @@
   margin-top: 48px;
 
   .name-div {
-    width: 900px;
+    width: 1000px;
     text-align: center;
 
     .name-field {
       width: 100%;
       margin-bottom: 16px;
+      font-size: 36px;
     }
   }
 
@@ -26,42 +27,52 @@
     color: var(--color-player-2);
   }
 
+  .large-icon {
+    font-size: 40px;
+    width: 48px;
+    height: 48px;
+    padding-top: 5px;
+  }
+
   .create-game-buttons {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 900px;
+    width: 1000px;
     margin-bottom: 32px;
   }
 
   .table-container {
-    width: 900px;
+    width: 1000px;
+    max-height: 1400px;
     margin: 8px;
-  }
+    overflow: auto;
 
-  table {
-    background-color: #333333;
-    border-collapse: collapse;
+    table {
+      background-color: #333333;
+      border-collapse: collapse;
 
-    .player-name {
-      font-size: 16px;
-    }
+      .player-name {
+        font-size: 36px;
+      }
 
-    td[mat-cell] {
-      width: 50%;
-      position: relative;
-      text-align: center;
-    }
+      td[mat-cell] {
+        width: 50%;
+        height: 72px;
+        position: relative;
+        text-align: center;
+      }
 
-    /* draw a line between the columns */
-    td[mat-cell]:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background-color: var(--mat-table-row-item-outline-color);
+      /* draw a line between the columns */
+      td[mat-cell]:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background-color: var(--mat-table-row-item-outline-color);
+      }
     }
   }
 }
