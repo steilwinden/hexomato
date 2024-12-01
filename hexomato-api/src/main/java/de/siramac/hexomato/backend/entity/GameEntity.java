@@ -17,7 +17,9 @@ import java.util.List;
 public class GameEntity extends AbstractEntity {
 
     private String namePlayer1;
+    private boolean humanPlayer1;
     private String namePlayer2;
+    private boolean humanPlayer2;
     @Enumerated(EnumType.STRING)
     private Player turn;
     @Enumerated(EnumType.STRING)

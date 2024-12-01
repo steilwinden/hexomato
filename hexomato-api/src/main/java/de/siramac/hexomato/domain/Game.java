@@ -1,15 +1,13 @@
 package de.siramac.hexomato.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 
 import static de.siramac.hexomato.domain.Player.PLAYER_1;
 import static de.siramac.hexomato.domain.Player.PLAYER_2;
 
+@ToString
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -20,7 +18,11 @@ public class Game {
     @Setter
     private String namePlayer1;
     @Setter
+    private boolean humanPlayer1;
+    @Setter
     private String namePlayer2;
+    @Setter
+    private boolean humanPlayer2;
     @Setter
     private Player turn;
     @Setter
@@ -30,11 +32,13 @@ public class Game {
 
     public static final int BOARD_SIZE = 11;
 
-    public Game(Player player, String name) {
+    public Game(Player player, boolean humanPlayer, String name) {
         if (player == PLAYER_1) {
             namePlayer1 = name;
+            humanPlayer1 = humanPlayer;
         } else if (player == PLAYER_2) {
             namePlayer2 = name;
+            humanPlayer2 = humanPlayer;
         }
         turn = PLAYER_1;
         createdOn = Instant.now();

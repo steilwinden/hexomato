@@ -1,0 +1,9 @@
+Hex Rules
+Hex is played on a rhombic grid of hexagons, typically of size 11×11, although other sizes are also possible.
+Each player has an allocated color, conventionally red and blue, or black and white. Each player is also
+assigned two opposite board edges. The hexagons on each of the four corners belong to both adjacent board edges.
+
+The players take turns placing a stone of their color on a single cell on the board. The most common convention
+is for Red to go first. Once placed, stones are not moved, replaced, or removed from the board. Each player's
+goal is to form a connected path of their own stones linking their two board edges. The player who complete
+such a connection wins the game.
