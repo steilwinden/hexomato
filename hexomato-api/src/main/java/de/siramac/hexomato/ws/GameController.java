@@ -38,11 +38,11 @@ public class GameController {
         return sink.asFlux()
                 .doOnSubscribe(subscription -> {
                     log.info("{} connected", namePlayer);
-                    sendGameWithMessage(gameId, "");
+                    loadAndSendGame(gameId, "");
                 })
                 .doOnCancel(() -> {
                     log.info("{} disconnected", namePlayer);
-                    sendGameWithMessage(gameId, namePlayer + " has left the game");
+                    loadAndSendGame(gameId, namePlayer + " has left the game");
                 });
     }
 
@@ -52,16 +52,28 @@ public class GameController {
         return Mono.fromCallable(() -> gameService.makeMove(gameId, row, col, player))
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(game -> {
-                    triggerSse(game, "");
+                    sendGame(game, "");
                     return ResponseEntity.ok().build();
                 })
                 .defaultIfEmpty(ResponseEntity.unprocessableEntity().build());
     }
 
-    private void sendGameWithMessage(Long gameId, String connectionMessage) {
+    private void loadAndSendGame(Long gameId, String connectionMessage) {
         Mono.fromCallable(() -> gameService.loadGame(gameId))
                 .subscribeOn(Schedulers.boundedElastic())
-                .subscribe(game -> triggerSse(game, connectionMessage));
+                .doOnNext(game -> sendGame(game, connectionMessage))
+                .subscribe();
+    }
+
+    private void sendGame(Game game, String connectionMessage) {
+        if (gameService.isAiTurn(game)) {
+            Mono.fromCallable(() -> gameService.makeAiMove(game))
+                    .subscribeOn(Schedulers.boundedElastic())
+                    .doOnNext(nextGame -> triggerSse(nextGame, connectionMessage))
+                    .subscribe();
+        } else {
+            triggerSse(game, connectionMessage);
+        }
     }
 
     private void triggerSse(Game game, String connectionMessage) {
