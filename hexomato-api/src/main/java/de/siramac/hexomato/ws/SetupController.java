@@ -30,8 +30,8 @@ public class SetupController {
 
     public SetupController(GameService gameService) {
         this.gameService = gameService;
-        gameService.createGame(PLAYER_1, false, "[AI] WALL·E");
-        gameService.createGame(PLAYER_2, false, "[AI] EVE");
+        gameService.createGame(PLAYER_1, false, "αMax");
+        gameService.createGame(PLAYER_2, false, "Monte-Carlo");
         triggerSse(gameService.loadCurrentGames());
     }
 
@@ -44,7 +44,8 @@ public class SetupController {
 
     @GetMapping("/createGame/player/{player}/name/{name}")
     public Mono<Long> createGame(@PathVariable Player player, @PathVariable String name) {
-        return Mono.fromCallable(() -> gameService.createGame(player, true, name))
+        return Mono.fromCallable(() -> gameService.createGame(player, true ,name))
+
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(gameId -> {
                     triggerSse(gameService.loadCurrentGames());

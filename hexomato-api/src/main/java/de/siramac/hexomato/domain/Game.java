@@ -3,6 +3,7 @@ package de.siramac.hexomato.domain;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.*;
 
 import static de.siramac.hexomato.domain.Player.PLAYER_1;
 import static de.siramac.hexomato.domain.Player.PLAYER_2;
@@ -28,6 +29,7 @@ public class Game {
     @Setter
     private Player winner;
     private Instant createdOn;
+    @Setter
     private Node[][] board;
 
     public static final int BOARD_SIZE = 11;
@@ -51,4 +53,114 @@ public class Game {
         }
     }
 
+    public int getNumActions() {
+        return (int) Arrays.stream(board)
+            .flatMap(Arrays::stream)
+            .filter(node -> node.getPlayer() == null)
+            .count();
+    }
+
+    public Node[] getValidActions() {
+        return Arrays.stream(board)
+            .flatMap(Arrays::stream)
+            .filter(node -> node.getPlayer() == null)
+            .toArray(Node[]::new);
+    }
+
+    public Node[][] getBoardCopy() {
+        return deepCopyBoard(board);
+    }
+
+    public void reset(Node[][] board, Player player, Player winner) {
+        this.board = deepCopyBoard(board);
+        this.turn = player;
+        this.winner = winner;
+    }
+
+    public void makeMoveOnBoard(int row, int col, Player player) {
+        Node node = board[row][col];
+        node.setPlayer(player);
+        setNewGameState(node, player);
+    }
+
+    private void setNewGameState(Node node, Player player) {
+        Set<Node> winnerPath = findWinnerPath(board, node, player);
+        if (!winnerPath.isEmpty()) {
+            for (Node winnerNode : winnerPath) {
+                winnerNode.setPartOfWinnerPath(true);
+            }
+            setWinner(player);
+        } else {
+            setTurn(getTurn() == PLAYER_1 ? PLAYER_2 : PLAYER_1);
+        }
+    }
+
+    private Set<Node> findWinnerPath(Node[][] board, Node node, Player player) {
+        Set<Node> visited = breadthFirstSearch(board, node);
+        boolean containsRowMin = false;
+        boolean containsRowMax = false;
+        boolean containsColMin = false;
+        boolean containsColMax = false;
+
+        for (Node v : visited) {
+            if (v.getRow() == 0) {
+                containsRowMin = true;
+            }
+            if (v.getRow() == BOARD_SIZE - 1) {
+                containsRowMax = true;
+            }
+            if (v.getCol() == 0) {
+                containsColMin = true;
+            }
+            if (v.getCol() == BOARD_SIZE - 1) {
+                containsColMax = true;
+            }
+        }
+        if (player == PLAYER_1 && containsRowMin && containsRowMax) {
+            return visited;
+        } else if (player == PLAYER_2 && containsColMin && containsColMax) {
+            return visited;
+        }
+        return Collections.emptySet();
+    }
+
+    private Set<Node> breadthFirstSearch(Node[][] board, Node start) {
+        Queue<Node> queue = new LinkedList<>();
+        Set<Node> visited = new HashSet<>();
+        queue.add(start);
+        visited.add(start);
+
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+
+            for (Node neighbor : current.getNeighbours(board)) {
+                if (!visited.contains(neighbor)) {
+                    queue.add(neighbor);
+                    visited.add(neighbor);
+                }
+            }
+        }
+        return visited;
+    }
+
+    private Node[][] deepCopyBoard(Node[][] original) {
+        int rows = original.length;
+        int cols = original[0].length;
+        Node[][] copy = new Node[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Node originalNode = original[i][j];
+                Node copiedNode = new Node(
+                        originalNode.getRow(),
+                        originalNode.getCol()
+                );
+                copiedNode.setLastMove(originalNode.isLastMove());
+                copiedNode.setPartOfWinnerPath(originalNode.isPartOfWinnerPath());
+                copiedNode.setPlayer(originalNode.getPlayer());
+                copy[i][j] = copiedNode;
+            }
+        }
+        return copy;
+    }
 }

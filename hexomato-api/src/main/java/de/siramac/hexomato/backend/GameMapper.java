@@ -25,9 +25,17 @@ public class GameMapper {
             board[nodeEntity.getBoardRow()][nodeEntity.getBoardCol()] = createNode(nodeEntity);
         }
 
-        return new Game(gameEntity.getId(), gameEntity.getNamePlayer1(), gameEntity.isHumanPlayer1(),
-                gameEntity.getNamePlayer2(), gameEntity.isHumanPlayer2(), gameEntity.getTurn(),
-                gameEntity.getWinner(), gameEntity.getCreatedOn(), board);
+        return new Game(
+            gameEntity.getId(),
+            gameEntity.getNamePlayer1(),
+            gameEntity.isHumanPlayer1(),
+            gameEntity.getNamePlayer2(),
+            gameEntity.isHumanPlayer2(),
+            gameEntity.getTurn(),
+            gameEntity.getWinner(),
+            gameEntity.getCreatedOn(),
+            board
+        );
     }
 
     private Node createNode(NodeEntity nodeEntity) {
@@ -52,8 +60,18 @@ public class GameMapper {
     }
 
     private static GameEntity createGameEntity(Game game) {
-        GameEntity gameEntity = new GameEntity(game.getNamePlayer1(), game.isHumanPlayer1(), game.getNamePlayer2(),
-                game.isHumanPlayer2(), game.getTurn(), game.getWinner(), game.getCreatedOn(), null);
+
+        GameEntity gameEntity = new GameEntity(
+            game.getNamePlayer1(),
+            game.isHumanPlayer1(),
+            game.getNamePlayer2(),
+            game.isHumanPlayer2(),
+            game.getTurn(),
+            game.getWinner(),
+            game.getCreatedOn(),
+            null
+        );
+      
         gameEntity.setId(game.getId());
         return gameEntity;
     }
