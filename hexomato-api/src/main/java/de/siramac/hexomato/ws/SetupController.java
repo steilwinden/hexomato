@@ -45,6 +45,7 @@ public class SetupController {
     @GetMapping("/createGame/player/{player}/name/{name}")
     public Mono<Long> createGame(@PathVariable Player player, @PathVariable String name) {
         return Mono.fromCallable(() -> gameService.createGame(player, true ,name))
+
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(gameId -> {
                     triggerSse(gameService.loadCurrentGames());
