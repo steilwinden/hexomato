@@ -5,15 +5,17 @@ import de.siramac.hexomato.domain.Game;
 import de.siramac.hexomato.domain.Node;
 import de.siramac.hexomato.domain.Player;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import static de.siramac.hexomato.agent.mcts.Util.getArgMax;
 
+@Slf4j
 @AllArgsConstructor
 public class MctsAgent implements Agent {
 
     private Player player;
     private Game simulationEnv;
-    final long SIMULATION_TIME = 2_000; // in milliseconds
+    final long SIMULATION_TIME = 1_000; // in milliseconds
 
     @Override
     public Node getMove(Game game) {
@@ -27,15 +29,16 @@ public class MctsAgent implements Agent {
     private UCTNode monteCarloTreeSearch() {
         long startTime = System.currentTimeMillis();
         UCTNode rootNode = new UCTNode(
-            simulationEnv.getBoard(),
-            simulationEnv.getTurn(),
-            simulationEnv.getValidActions(),
-            simulationEnv.getWinner(),
-            null,
-            null
+                simulationEnv.getBoard(),
+                simulationEnv.getTurn(),
+                simulationEnv.getValidActions(),
+                simulationEnv.getWinner(),
+                null,
+                null
         );
+        int numSimulations = 0;
+        while (System.currentTimeMillis() - startTime < SIMULATION_TIME) {
 
-        while(System.currentTimeMillis() - startTime < SIMULATION_TIME) {
             // Selection
             SelectionResult selectionResult = rootNode.select();
             UCTNode selectedNode = selectionResult.node();
@@ -52,7 +55,9 @@ public class MctsAgent implements Agent {
 
             // Backup
             leafNode.backup(winner);
+            numSimulations++;
         }
+        log.info("Number of simulations: {}", numSimulations);
         return rootNode;
     }
 }
