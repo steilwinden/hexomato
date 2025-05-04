@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import static de.siramac.hexomato.domain.Game.BOARD_SIZE;
 import static de.siramac.hexomato.domain.Player.PLAYER_1;
@@ -116,11 +114,8 @@ public class GameService {
     }
 
     public Game makeAiMove(Game game) {
-         Node node = agent.getMove(game);
-         game = makeMove(game.getId(), node.getRow(), node.getCol(), game.getTurn());
-         return game;
-
-    public void deleteOlderGames() {
-        gameRepository.deleteOlderGames();
+        Node node = agent.getMove(game);
+        game = makeMove(game.getId(), node.getRow(), node.getCol(), game.getTurn());
+        return game;
     }
 }
