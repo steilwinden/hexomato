@@ -97,7 +97,7 @@ public class Game {
         }
     }
 
-    private Set<Node> findWinnerPath(Node[][] board, Node node, Player player) {
+    public Set<Node> findWinnerPath(Node[][] board, Node node, Player player) {
         Set<Node> visited = breadthFirstSearch(board, node);
         boolean containsRowMin = false;
         boolean containsRowMax = false;
