@@ -4,6 +4,7 @@ import de.siramac.hexomato.backend.entity.GameEntity;
 import de.siramac.hexomato.backend.entity.GameEntityRepository;
 import de.siramac.hexomato.domain.Game;
 import de.siramac.hexomato.domain.GameRepository;
+import de.siramac.hexomato.domain.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +40,9 @@ public class GameRepositoryImpl implements GameRepository {
     public void deleteOlderGames() {
         Instant pointInTime = Instant.now().minus(TIMESPAN_IN_HOURS, ChronoUnit.HOURS);
         gameEntityRepository.deleteAllByCreatedOnBefore(pointInTime);
+    }
+
+    public Player loadTurn(Long gameId) {
+        return gameEntityRepository.findTurnById(gameId);
     }
 }

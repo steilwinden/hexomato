@@ -11,4 +11,6 @@ public interface GameRepository {
     List<Game> loadCurrentGames();
 
     void deleteOlderGames();
+
+    Player loadTurn(Long gameId);
 }

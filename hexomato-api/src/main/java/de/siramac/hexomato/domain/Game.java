@@ -1,9 +1,6 @@
 package de.siramac.hexomato.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.*;
@@ -11,6 +8,7 @@ import java.util.*;
 import static de.siramac.hexomato.domain.Player.PLAYER_1;
 import static de.siramac.hexomato.domain.Player.PLAYER_2;
 
+@ToString
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

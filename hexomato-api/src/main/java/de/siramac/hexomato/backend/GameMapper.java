@@ -60,6 +60,7 @@ public class GameMapper {
     }
 
     private static GameEntity createGameEntity(Game game) {
+
         GameEntity gameEntity = new GameEntity(
             game.getNamePlayer1(),
             game.isHumanPlayer1(),
@@ -70,6 +71,7 @@ public class GameMapper {
             game.getCreatedOn(),
             null
         );
+      
         gameEntity.setId(game.getId());
         return gameEntity;
     }
