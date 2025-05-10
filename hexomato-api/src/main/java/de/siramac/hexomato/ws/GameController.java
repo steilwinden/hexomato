@@ -61,6 +61,8 @@ public class GameController {
     private void loadAndSendGame(Long gameId, String connectionMessage) {
         Mono.fromCallable(() -> gameService.loadGame(gameId))
                 .subscribeOn(Schedulers.boundedElastic())
+                .doOnNext(game -> triggerSse(game, connectionMessage))
+                .filter(gameService::isAiTurn)
                 .doOnNext(game -> sendGame(game, connectionMessage))
                 .subscribe();
     }
