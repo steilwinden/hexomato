@@ -55,16 +55,16 @@ public class Game {
 
     public int getNumActions() {
         return (int) Arrays.stream(board)
-            .flatMap(Arrays::stream)
-            .filter(node -> node.getPlayer() == null)
-            .count();
+                .flatMap(Arrays::stream)
+                .filter(node -> node.getPlayer() == null)
+                .count();
     }
 
     public Node[] getValidActions() {
         return Arrays.stream(board)
-            .flatMap(Arrays::stream)
-            .filter(node -> node.getPlayer() == null)
-            .toArray(Node[]::new);
+                .flatMap(Arrays::stream)
+                .filter(node -> node.getPlayer() == null)
+                .toArray(Node[]::new);
     }
 
     public Node[][] getBoardCopy() {
@@ -81,6 +81,16 @@ public class Game {
         Node node = board[row][col];
         node.setPlayer(player);
         setNewGameState(node, player);
+    }
+
+    public void makeFinalMoveOnBoard(int row, int col, Player player) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                board[i][j].setLastMove(false);
+            }
+        }
+        board[row][col].setLastMove(true);
+        makeMoveOnBoard(row, col, player);
     }
 
     private void setNewGameState(Node node, Player player) {

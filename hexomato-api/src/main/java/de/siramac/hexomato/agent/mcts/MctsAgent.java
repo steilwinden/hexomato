@@ -15,7 +15,7 @@ public class MctsAgent implements Agent {
 
     private Player player;
     private Game simulationEnv;
-    final long SIMULATION_TIME = 1_000; // in milliseconds
+    final long SIMULATION_TIME = 2_000; // in milliseconds
 
     @Override
     public Node getMove(Game game) {

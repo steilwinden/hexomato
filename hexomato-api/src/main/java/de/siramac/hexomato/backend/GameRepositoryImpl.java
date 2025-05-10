@@ -26,7 +26,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     public List<Game> loadCurrentGames() {
         Instant pointInTime = Instant.now().minus(TIMESPAN_IN_HOURS, ChronoUnit.HOURS);
-        List<GameEntity> gameEntityList = gameEntityRepository.findAllByCreatedOnAfter(pointInTime);
+        List<GameEntity> gameEntityList = gameEntityRepository.findAllByCreatedOnAfterOrderByNamePlayer1AscNamePlayer2Asc(pointInTime);
         return gameEntityList.stream().map(gameMapper::map).toList();
     }
 

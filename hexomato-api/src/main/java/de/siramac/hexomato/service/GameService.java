@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
 
 import static de.siramac.hexomato.domain.Game.BOARD_SIZE;
 import static de.siramac.hexomato.domain.Player.PLAYER_1;
@@ -84,7 +84,7 @@ public class GameService {
             return null;
         }
 
-        game.makeMoveOnBoard(node.getRow(), node.getCol(), player);
+        game.makeFinalMoveOnBoard(node.getRow(), node.getCol(), player);
         game = gameRepository.saveGame(game);
         return game;
     }

@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface GameEntityRepository extends JpaRepository<GameEntity, Long> {
 
-    List<GameEntity> findAllByCreatedOnAfter(Instant pointOfTime);
+    List<GameEntity> findAllByCreatedOnAfterOrderByNamePlayer1AscNamePlayer2Asc(Instant pointOfTime);
 
     void deleteAllByCreatedOnBefore(Instant pointOfTime);
 
