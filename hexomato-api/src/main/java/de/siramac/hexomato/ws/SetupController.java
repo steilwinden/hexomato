@@ -19,6 +19,8 @@ import java.util.List;
 
 import static de.siramac.hexomato.domain.Player.PLAYER_1;
 import static de.siramac.hexomato.domain.Player.PLAYER_2;
+import static de.siramac.hexomato.service.GameService.ALPHA_MAX_AI_NAME;
+import static de.siramac.hexomato.service.GameService.MONTE_CARLO_AI_NAME;
 
 @Slf4j
 @RestController
@@ -30,8 +32,8 @@ public class SetupController {
 
     public SetupController(GameService gameService) {
         this.gameService = gameService;
-        gameService.createGame(PLAYER_1, false, "αMax");
-        gameService.createGame(PLAYER_2, false, "Monte-Carlo");
+        gameService.createGame(PLAYER_1, false, ALPHA_MAX_AI_NAME);
+        gameService.createGame(PLAYER_2, false, MONTE_CARLO_AI_NAME);
         triggerSse(gameService.loadCurrentGames());
     }
 
@@ -44,8 +46,7 @@ public class SetupController {
 
     @GetMapping("/createGame/player/{player}/name/{name}")
     public Mono<Long> createGame(@PathVariable Player player, @PathVariable String name) {
-        return Mono.fromCallable(() -> gameService.createGame(player, true ,name))
-
+        return Mono.fromCallable(() -> gameService.createGame(player, true, name))
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(gameId -> {
                     triggerSse(gameService.loadCurrentGames());

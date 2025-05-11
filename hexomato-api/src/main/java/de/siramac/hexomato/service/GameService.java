@@ -25,6 +25,8 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
+    public static final String ALPHA_MAX_AI_NAME = "αMax";
+    public static final String MONTE_CARLO_AI_NAME = "Monte-Carlo";
     private Agent agent;
 
     public Long createGame(Player player, boolean humanPlayer, String name) {
@@ -60,10 +62,10 @@ public class GameService {
         gameRepository.saveGame(game);
 
         if (!game.isHumanPlayer1()) {
-            createGame(PLAYER_1, false, "αMax");
+            createGame(PLAYER_1, false, ALPHA_MAX_AI_NAME);
         }
         if (!game.isHumanPlayer2()) {
-            createGame(PLAYER_2, false, "Monte-Carlo");
+            createGame(PLAYER_2, false, MONTE_CARLO_AI_NAME);
         }
         return true;
     }
@@ -107,10 +109,10 @@ public class GameService {
 
     public boolean isAiTurn(Game game) {
         return isValidGameState(game) &&
-            (
-                (game.getTurn() == PLAYER_1 && !game.isHumanPlayer1()) ||
-                (game.getTurn() == PLAYER_2 && !game.isHumanPlayer2())
-            );
+                (
+                        (game.getTurn() == PLAYER_1 && !game.isHumanPlayer1())
+                                || (game.getTurn() == PLAYER_2 && !game.isHumanPlayer2())
+                );
     }
 
     public Game makeAiMove(Game game) {

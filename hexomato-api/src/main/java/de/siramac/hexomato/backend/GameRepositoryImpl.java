@@ -38,7 +38,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     public void deleteOlderGames() {
         Instant pointInTime = Instant.now().minus(TIMESPAN_IN_HOURS, ChronoUnit.HOURS);
-        gameEntityRepository.deleteAllByCreatedOnBefore(pointInTime);
+        gameEntityRepository.deleteAllByCreatedOnBeforeAndHumanPlayer1IsTrueAndHumanPlayer2IsTrue(pointInTime);
     }
 
 }

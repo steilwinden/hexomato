@@ -11,6 +11,6 @@ public interface GameEntityRepository extends JpaRepository<GameEntity, Long> {
 
     List<GameEntity> findAllByCreatedOnAfterOrderByNamePlayer1AscNamePlayer2Asc(Instant pointOfTime);
 
-    void deleteAllByCreatedOnBefore(Instant pointOfTime);
+    void deleteAllByCreatedOnBeforeAndHumanPlayer1IsTrueAndHumanPlayer2IsTrue(Instant pointOfTime);
 
 }
