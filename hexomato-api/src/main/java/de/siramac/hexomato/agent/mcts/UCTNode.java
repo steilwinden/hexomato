@@ -124,6 +124,7 @@ public class UCTNode {
         UCTNode child = this;
 
         if (winner == null) {
+            // FIXME: nextAction can be null
             Node validAction = validActions[nextAction];
             simulationEnv.makeMoveOnBoard(validAction.getRow(), validAction.getCol(), activePlayer);
             child = new UCTNode(

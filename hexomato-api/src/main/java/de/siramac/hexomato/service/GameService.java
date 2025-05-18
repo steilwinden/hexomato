@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static de.siramac.hexomato.domain.Game.BOARD_SIZE;
@@ -24,23 +25,39 @@ import static de.siramac.hexomato.domain.Player.PLAYER_2;
 public class GameService {
 
     private final GameRepository gameRepository;
-
-    public static final String ALPHA_MAX_AI_NAME = "αMax";
-    public static final String MONTE_CARLO_AI_NAME = "Monte-Carlo";
     private Agent agent;
 
-    public Long createGame(Player player, boolean humanPlayer, String name) {
+    public Game createGame(Player player, boolean humanPlayer, String name) {
         if (!humanPlayer) {
             agent = new MctsAgent(player, new Game(player, false, name));
         }
 
         Game game = new Game(player, humanPlayer, name);
         game = gameRepository.saveGame(game);
-        return game.getId();
+        return game;
     }
 
     public List<Game> loadCurrentGames() {
-        return gameRepository.loadCurrentGames();
+        List<Game> games = new ArrayList<>(gameRepository.loadCurrentGames());
+        boolean createAiPlayer1 = true;
+        boolean createAiPlayer2 = true;
+
+        for (Game game : games) {
+            if (!game.isHumanPlayer1() && game.getNamePlayer2() == null) {
+                createAiPlayer1 = false;
+            }
+            if (!game.isHumanPlayer2() && game.getNamePlayer1() == null) {
+                createAiPlayer2 = false;
+            }
+        }
+        if (createAiPlayer2) {
+            games.add(createGame(PLAYER_2, false, "Monte-Carlo"));
+        }
+        if (createAiPlayer1) {
+            games.add(createGame(PLAYER_1, false, "αMax"));
+        }
+
+        return games;
     }
 
     public Game loadGame(Long gameId) {
@@ -59,14 +76,8 @@ public class GameService {
             game.setNamePlayer2(name);
             game.setHumanPlayer2(true);
         }
-        gameRepository.saveGame(game);
 
-        if (!game.isHumanPlayer1()) {
-            createGame(PLAYER_1, false, ALPHA_MAX_AI_NAME);
-        }
-        if (!game.isHumanPlayer2()) {
-            createGame(PLAYER_2, false, MONTE_CARLO_AI_NAME);
-        }
+        gameRepository.saveGame(game);
         return true;
     }
 

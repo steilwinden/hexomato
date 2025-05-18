@@ -17,11 +17,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 
-import static de.siramac.hexomato.domain.Player.PLAYER_1;
-import static de.siramac.hexomato.domain.Player.PLAYER_2;
-import static de.siramac.hexomato.service.GameService.ALPHA_MAX_AI_NAME;
-import static de.siramac.hexomato.service.GameService.MONTE_CARLO_AI_NAME;
-
 @Slf4j
 @RestController
 @RequestMapping("/ws/setup")
@@ -32,25 +27,32 @@ public class SetupController {
 
     public SetupController(GameService gameService) {
         this.gameService = gameService;
-        gameService.createGame(PLAYER_1, false, ALPHA_MAX_AI_NAME);
-        gameService.createGame(PLAYER_2, false, MONTE_CARLO_AI_NAME);
-        triggerSse(gameService.loadCurrentGames());
     }
 
     @GetMapping(value = "/register/sse", produces = "text/event-stream")
     public Flux<ServerSentEvent<List<GameOnlyWs>>> registerSse() {
         return sink.asFlux()
-                .doOnSubscribe(subscription -> log.info("client connected"))
+                .doOnSubscribe(subscription -> {
+                    log.info("client connected");
+                    loadCurrentGames();
+                })
                 .doOnCancel(() -> log.info("client disconnected"));
+    }
+
+    private void loadCurrentGames() {
+        Mono.fromCallable(gameService::loadCurrentGames)
+                .subscribeOn(Schedulers.boundedElastic())
+                .doOnNext(this::triggerSse)
+                .subscribe();
     }
 
     @GetMapping("/createGame/player/{player}/name/{name}")
     public Mono<Long> createGame(@PathVariable Player player, @PathVariable String name) {
         return Mono.fromCallable(() -> gameService.createGame(player, true, name))
                 .subscribeOn(Schedulers.boundedElastic())
-                .map(gameId -> {
+                .map(game -> {
                     triggerSse(gameService.loadCurrentGames());
-                    return gameId;
+                    return game.getId();
                 });
     }
 
