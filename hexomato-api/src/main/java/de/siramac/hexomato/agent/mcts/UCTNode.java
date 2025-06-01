@@ -102,7 +102,8 @@ public class UCTNode {
         Integer bestAction;
 
         while (true) {
-            if (currentNode.validActions.length == 0) {
+            // end select stage if all moves are played or a winning state was found
+            if (currentNode.validActions.length == 0 || currentNode.winner != null) {
                 bestAction = null;
                 break;
             }
@@ -120,22 +121,19 @@ public class UCTNode {
     }
 
     public UCTNode expand(Game simulationEnv, Integer nextAction) {
+        Node validAction = validActions[nextAction];
         simulationEnv.reset(state, activePlayer, winner);
-        UCTNode child = this;
+        simulationEnv.makeMoveOnBoard(validAction.getRow(), validAction.getCol(), activePlayer);
 
-        if (winner == null) {
-            // FIXME: nextAction can be null
-            Node validAction = validActions[nextAction];
-            simulationEnv.makeMoveOnBoard(validAction.getRow(), validAction.getCol(), activePlayer);
-            child = new UCTNode(
-                    simulationEnv.getBoard(),
-                    simulationEnv.getTurn(),
-                    simulationEnv.getValidActions(),
-                    simulationEnv.getWinner(),
-                    nextAction,
-                    this);
-            children.put(nextAction, child);
-        }
+        UCTNode child = new UCTNode(
+                simulationEnv.getBoard(),
+                simulationEnv.getTurn(),
+                simulationEnv.getValidActions(),
+                simulationEnv.getWinner(),
+                nextAction,
+                this);
+
+        children.put(nextAction, child);
         return child;
     }
 
@@ -149,7 +147,6 @@ public class UCTNode {
      * If a path was found, the winner is PLAYER_1, else PLAYER_2.
      */
     public Player simulate(Game simulationEnv) {
-        if (winner != null) return winner;
         simulationEnv.reset(state, activePlayer, null);
 
         List<Node> availableActions = new ArrayList<>(Arrays.asList(simulationEnv.getValidActions()));

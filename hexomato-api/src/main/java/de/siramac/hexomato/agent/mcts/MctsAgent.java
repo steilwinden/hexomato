@@ -44,11 +44,16 @@ public class MctsAgent implements Agent {
             UCTNode selectedNode = selectionResult.node();
             Integer nextAction = selectionResult.action();
 
-            // Expansion
-            UCTNode leafNode = selectedNode.expand(simulationEnv, nextAction);
-            Player winner = selectedNode.getWinner();
+            // Expansion: expand selectedNode if node is not a terminal state
+            UCTNode leafNode;
+            if (nextAction != null) {
+                leafNode = selectedNode.expand(simulationEnv, nextAction);
+            } else {
+                leafNode = selectedNode;
+            }
 
             // Simulation
+            Player winner = leafNode.getWinner();
             if (winner == null) {
                 winner = leafNode.simulate(simulationEnv);
             }
