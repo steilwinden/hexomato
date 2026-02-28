@@ -1,0 +1,54 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "hexomato_app",
+            "cwd": "hexomato_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "hexomato_app (chrome)",
+            "cwd": "hexomato_app",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-d",
+                "chrome"
+            ]
+        },
+        {
+            "name": "hexomato_app (profile mode)",
+            "cwd": "hexomato_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "hexomato_app (release mode)",
+            "cwd": "hexomato_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "type": "java",
+            "name": "hexomato-api",
+            "request": "launch",
+            "mainClass": "de.siramac.hexomato.Application",
+            "projectName": "hexomato-api"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Frontend (Chrome) + Backend",
+            "configurations": [
+                "hexomato_app (chrome)",
+                "hexomato-api"
+            ]
+        }
+    ]
+}

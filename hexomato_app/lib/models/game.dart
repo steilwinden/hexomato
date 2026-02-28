@@ -15,15 +15,16 @@ class Game {
     required this.connectionMessage,
   });
 
-  Game.singlePlayer({
-    required String namePlayer,
+  Game.create({
+    required String namePlayer1,
+    required String namePlayer2,
     required Player turn,
     required bool playAgainstHuman,
   }) : this(
          id: null,
-         namePlayer1: turn == Player.PLAYER_1 ? namePlayer : null,
+         namePlayer1: namePlayer1,
          humanPlayer1: turn == Player.PLAYER_1 ? true : playAgainstHuman,
-         namePlayer2: turn == Player.PLAYER_2 ? namePlayer : null,
+         namePlayer2: namePlayer2,
          humanPlayer2: turn == Player.PLAYER_2 ? true : playAgainstHuman,
          turn: turn,
          winner: null,
@@ -32,9 +33,9 @@ class Game {
        );
 
   final int? id;
-  final String? namePlayer1;
+  final String namePlayer1;
   final bool humanPlayer1;
-  final String? namePlayer2;
+  final String namePlayer2;
   final bool humanPlayer2;
   final Player turn;
   final Player? winner;

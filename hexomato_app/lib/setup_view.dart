@@ -73,16 +73,21 @@ class _SetupViewState extends State<SetupView> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 90,
-        title: Center(child: const Text('Hexomato')),
-        actions: [
-          IconButton(
-            tooltip: 'Add Game',
-            onPressed: _openAddGameOverlay,
-            icon: const Icon(Icons.add),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: AppBar(
+            title: const Center(child: Text('Hexomato')),
+            actions: [
+              IconButton(
+                tooltip: 'Add Game',
+                onPressed: _openAddGameOverlay,
+                icon: const Icon(Icons.add),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
