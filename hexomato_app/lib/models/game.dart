@@ -6,8 +6,10 @@ class Game {
   Game({
     required this.id,
     required this.namePlayer1,
+    required this.uuidPlayer1,
     required this.humanPlayer1,
     required this.namePlayer2,
+    required this.uuidPlayer2,
     required this.humanPlayer2,
     required this.turn,
     required this.winner,
@@ -15,17 +17,36 @@ class Game {
     required this.connectionMessage,
   });
 
-  Game.create({
-    required String namePlayer1,
-    required String namePlayer2,
+  Game.createOnlineGame({
+    required String namePlayer,
     required Player turn,
-    required bool playAgainstHuman,
+    String? localPlayerUuid,
   }) : this(
          id: null,
-         namePlayer1: namePlayer1,
-         humanPlayer1: turn == Player.PLAYER_1 ? true : playAgainstHuman,
-         namePlayer2: namePlayer2,
-         humanPlayer2: turn == Player.PLAYER_2 ? true : playAgainstHuman,
+         namePlayer1: turn == Player.PLAYER_1 ? namePlayer : null,
+         uuidPlayer1: turn == Player.PLAYER_1 ? localPlayerUuid : null,
+         humanPlayer1: true,
+         namePlayer2: turn == Player.PLAYER_2 ? namePlayer : null,
+         uuidPlayer2: turn == Player.PLAYER_2 ? localPlayerUuid : null,
+         humanPlayer2: true,
+         turn: turn,
+         winner: null,
+         board: null,
+         connectionMessage: null,
+       );
+
+  Game.createSinglePlayerGame({
+    required String namePlayer,
+    required Player turn,
+    String? localPlayerUuid,
+  }) : this(
+         id: null,
+         namePlayer1: turn == Player.PLAYER_1 ? namePlayer : 'Hex0Mat0',
+         uuidPlayer1: turn == Player.PLAYER_1 ? localPlayerUuid : null,
+         humanPlayer1: turn == Player.PLAYER_1,
+         namePlayer2: turn == Player.PLAYER_2 ? namePlayer : 'Hex0Mat0',
+         uuidPlayer2: turn == Player.PLAYER_2 ? localPlayerUuid : null,
+         humanPlayer2: turn == Player.PLAYER_2,
          turn: turn,
          winner: null,
          board: null,
@@ -33,9 +54,11 @@ class Game {
        );
 
   final int? id;
-  final String namePlayer1;
+  final String? namePlayer1;
+  final String? uuidPlayer1;
   final bool humanPlayer1;
-  final String namePlayer2;
+  final String? namePlayer2;
+  final String? uuidPlayer2;
   final bool humanPlayer2;
   final Player turn;
   final Player? winner;

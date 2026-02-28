@@ -1,106 +1,150 @@
 import 'package:flutter/material.dart';
 import 'package:hexomato_app/add_game_view.dart';
-import 'package:hexomato_app/games_view.dart';
 import 'package:hexomato_app/models/game.dart';
+import 'package:hexomato_app/widgets/app_header.dart';
 
-class SetupView extends StatefulWidget {
-  const SetupView({super.key});
+class SetupView extends StatelessWidget {
+  final String title;
+  final Widget child;
+  final bool isEmpty;
+  final bool showAddButton;
+  final void Function(String name, Player turn)? onAddGame;
 
-  @override
-  State<SetupView> createState() => _SetupViewState();
-}
+  const SetupView({
+    super.key,
+    required this.title,
+    required this.child,
+    this.isEmpty = false,
+    this.showAddButton = true,
+    this.onAddGame,
+  });
 
-class _SetupViewState extends State<SetupView> {
-  final List<Game> _registeredGames = [];
-
-  void _openAddGameOverlay() {
+  void _openAddGameOverlay(BuildContext context) {
     showModalBottomSheet(
-      useSafeArea: true,
-      isScrollControlled: true,
       context: context,
-      builder: (ctx) => AddGameView(onAddGame: _addGame),
-    );
-  }
-
-  void _addGame(Game game) {
-    setState(() {
-      _registeredGames.add(game);
-    });
-  }
-
-  void _removeGame(Game game) {
-    final gameIndex = _registeredGames.indexOf(game);
-    setState(() {
-      _registeredGames.remove(game);
-    });
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        content: const Text('Game deleted.'),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {
-            setState(() {
-              _registeredGames.insert(gameIndex, game);
-            });
-          },
-        ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => AddGameView(
+        onAddGame: (name, turn) {
+          onAddGame?.call(name, turn);
+        },
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget mainContent = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Click on '),
-        IconButton(
-          tooltip: 'Add Game',
-          onPressed: _openAddGameOverlay,
-          icon: const Icon(Icons.add),
-        ),
-        Text(' to add a game'),
-      ],
-    );
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
-    if (_registeredGames.isNotEmpty) {
-      mainContent = GamesView(
-        games: _registeredGames,
-        onRemoveGame: _removeGame,
+    Widget mainContent = child;
+
+    if (isEmpty) {
+      mainContent = Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.dashboard_customize_outlined,
+              size: 64,
+              color: colorScheme.onSurface.withValues(alpha: 0.2),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'No active game',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Add a game and start playing',
+              style: TextStyle(
+                color: colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
+            ),
+          ],
+        ),
       );
     }
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: AppBar(
-            title: const Center(child: Text('Hexomato')),
-            actions: [
-              IconButton(
-                tooltip: 'Add Game',
-                onPressed: _openAddGameOverlay,
-                icon: const Icon(Icons.add),
+      backgroundColor: theme.scaffoldBackgroundColor,
+      floatingActionButton: !showAddButton
+          ? null
+          : Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  colors: [colorScheme.primary, colorScheme.secondary],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: colorScheme.secondary.withValues(alpha: 0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
-            ],
+              child: InkWell(
+                onTap: () => _openAddGameOverlay(context),
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  width: 56,
+                  height: 56,
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.add, color: Colors.white, size: 28),
+                ),
+              ),
+            ),
+      body: Stack(
+        children: [
+          // Background Gradient Blobs
+          Positioned(
+            top: -50,
+            right: -50,
+            child: Container(
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    colorScheme.primary.withValues(alpha: 0.08),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              const Color.fromARGB(255, 72, 56, 146),
-              const Color.fromARGB(255, 128, 112, 21),
-            ],
+          Positioned(
+            bottom: -50,
+            left: -50,
+            child: Container(
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    colorScheme.secondary.withValues(alpha: 0.08),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-        child: Column(children: [Expanded(child: mainContent)]),
+          SafeArea(
+            child: Column(
+              children: [
+                AppHeader(title: title),
+                Expanded(child: mainContent),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
