@@ -15,7 +15,7 @@ class AddGameView extends StatefulWidget {
 
 class _AddGameViewState extends State<AddGameView> {
   final _nameController = TextEditingController();
-  Player _selectedPlayer = Player.PLAYER_1;
+  Player _selectedPlayer = Player.player1;
 
   String _generateRandomName() {
     final pair = generateWordPairs().first;
@@ -245,9 +245,10 @@ class _AddGameViewState extends State<AddGameView> {
                   child: _TurnSelectionButton(
                     title: 'Player 1',
                     icon: Icons.person,
-                    isSelected: _selectedPlayer == Player.PLAYER_1,
+                    isSelected: _selectedPlayer == Player.player1,
+                    activeColor: colorScheme.primary,
                     onTap: () =>
-                        setState(() => _selectedPlayer = Player.PLAYER_1),
+                        setState(() => _selectedPlayer = Player.player1),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -255,9 +256,10 @@ class _AddGameViewState extends State<AddGameView> {
                   child: _TurnSelectionButton(
                     title: 'Player 2',
                     icon: Icons.person,
-                    isSelected: _selectedPlayer == Player.PLAYER_2,
+                    isSelected: _selectedPlayer == Player.player2,
+                    activeColor: colorScheme.secondary,
                     onTap: () =>
-                        setState(() => _selectedPlayer = Player.PLAYER_2),
+                        setState(() => _selectedPlayer = Player.player2),
                   ),
                 ),
               ],
@@ -297,7 +299,11 @@ class _AddGameViewState extends State<AddGameView> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: colorScheme.secondary.withValues(alpha: 0.3),
+                          color:
+                              (_selectedPlayer == Player.player1
+                                      ? colorScheme.primary
+                                      : colorScheme.secondary)
+                                  .withValues(alpha: 0.3),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -338,12 +344,14 @@ class _TurnSelectionButton extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.isSelected,
+    required this.activeColor,
     required this.onTap,
   });
 
   final String title;
   final IconData icon;
   final bool isSelected;
+  final Color activeColor;
   final VoidCallback onTap;
 
   @override
@@ -359,11 +367,11 @@ class _TurnSelectionButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
           color: isSelected
-              ? colorScheme.primary.withValues(alpha: 0.15)
+              ? activeColor.withValues(alpha: 0.15)
               : colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? colorScheme.primary : Colors.transparent,
+            color: isSelected ? activeColor : Colors.transparent,
             width: 2,
           ),
         ),
@@ -384,7 +392,7 @@ class _TurnSelectionButton extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: isSelected
-                    ? colorScheme.primary
+                    ? activeColor
                     : colorScheme.onSurface.withValues(alpha: 0.5),
               ),
             ),

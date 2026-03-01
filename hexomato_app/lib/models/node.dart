@@ -2,8 +2,8 @@ import 'package:hexomato_app/models/game.dart';
 
 class Node {
   Node({
-    required this.lastMove,
-    required this.partOfWinnerPath,
+    this.lastMove = false,
+    this.partOfWinnerPath = false,
     required this.player,
   });
 

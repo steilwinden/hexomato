@@ -60,6 +60,7 @@ class _OnlineGameSetupViewState extends State<OnlineGameSetupView> {
           label: 'UNDO',
           textColor: Theme.of(context).colorScheme.primary,
           onPressed: () {
+            if (!mounted) return;
             setState(() {
               _registeredGames.insert(gameIndex, game);
             });
