@@ -85,7 +85,7 @@ class _BoardViewState extends State<BoardView> {
           SafeArea(
             child: Column(
               children: [
-                const AppHeader(title: 'MATCH'),
+                const AppHeader(title: 'Match'),
                 _BoardHeader(game: _game),
                 Expanded(
                   child: Center(
@@ -224,13 +224,13 @@ class _BoardHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _PlayerInfo(
-            name: game.namePlayer1 ?? 'Player 1',
+            name: game.namePlayer1 ?? '',
             color: colorScheme.primary,
             isActive: isPlayer1Turn,
             isRight: false,
           ),
           const Text(
-            'VS',
+            'vs',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w900,
@@ -238,7 +238,7 @@ class _BoardHeader extends StatelessWidget {
             ),
           ),
           _PlayerInfo(
-            name: game.namePlayer2 ?? 'Player 2',
+            name: game.namePlayer2 ?? '',
             color: colorScheme.secondary,
             isActive: !isPlayer1Turn,
             isRight: true,

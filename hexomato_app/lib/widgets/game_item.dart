@@ -50,7 +50,7 @@ class GameItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: const Text(
-                  'VS',
+                  'vs',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w900,
@@ -148,6 +148,7 @@ class _PlayerBox extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
+                fontStyle: name == null ? FontStyle.italic : null,
                 color: name == null
                     ? colorScheme.onSurface.withOpacity(0.5)
                     : colorScheme.onSurface,

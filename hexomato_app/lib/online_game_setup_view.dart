@@ -79,7 +79,7 @@ class _OnlineGameSetupViewState extends State<OnlineGameSetupView> {
     );
 
     return SetupView(
-      title: 'ONLINE GAME',
+      title: 'Online Matches',
       isEmpty: _registeredGames.isEmpty,
       onAddGame: (name, turn) {
         _addGame(

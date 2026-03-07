@@ -18,7 +18,7 @@ class _SinglePlayerSetupViewState extends State<SinglePlayerSetupView> {
   @override
   Widget build(BuildContext context) {
     return SetupView(
-      title: 'SINGLE PLAYER',
+      title: 'Single Player',
       isEmpty: _activeGame == null,
       showAddButton: _activeGame == null,
       onAddGame: (name, turn) {

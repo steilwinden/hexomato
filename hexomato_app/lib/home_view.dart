@@ -102,7 +102,7 @@ class HomeView extends StatelessWidget {
                         const SizedBox(height: 16),
                         _MenuButton(
                           icon: Icons.public,
-                          title: 'Online Game',
+                          title: 'Online Matches',
                           subtitle: 'Compete with others',
                           onTap: () {
                             Navigator.of(context).push(
@@ -189,7 +189,7 @@ class _HexLogoHero extends StatelessWidget {
             ],
           ).createShader(bounds),
           child: const Text(
-            'HEX0MAT0',
+            'HEXO·MATO',
             style: TextStyle(
               fontSize: 48,
               fontWeight: FontWeight.bold,

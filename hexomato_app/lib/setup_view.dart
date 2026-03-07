@@ -51,7 +51,7 @@ class SetupView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'No active game',
+              'No active match',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -60,7 +60,7 @@ class SetupView extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Add a game and start playing',
+              'Add a match and start playing',
               style: TextStyle(
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
               ),

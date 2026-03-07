@@ -61,7 +61,7 @@ class _AddGameViewState extends State<AddGameView> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'INVALID NAME',
+                'Invalid Name',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w900,
@@ -98,7 +98,7 @@ class _AddGameViewState extends State<AddGameView> {
                       ),
                     ),
                     child: const Text(
-                      'GOT IT',
+                      'Got It',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -183,7 +183,7 @@ class _AddGameViewState extends State<AddGameView> {
                 ),
                 const SizedBox(width: 12),
                 const Text(
-                  'NEW MATCH',
+                  'New Match',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
@@ -230,7 +230,7 @@ class _AddGameViewState extends State<AddGameView> {
 
             // Turn Selection
             Text(
-              'START AS',
+              'Start As',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
@@ -279,7 +279,7 @@ class _AddGameViewState extends State<AddGameView> {
                       ),
                     ),
                     child: Text(
-                      'CANCEL',
+                      'Cancel',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.onSurface.withValues(alpha: 0.6),
@@ -320,7 +320,7 @@ class _AddGameViewState extends State<AddGameView> {
                         ),
                       ),
                       child: const Text(
-                        'START MATCH',
+                        'Start Match',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,

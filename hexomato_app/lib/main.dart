@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hexomato_app/home_view.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
       theme: ThemeData.dark().copyWith(
@@ -14,6 +16,7 @@ void main() {
           surface: Color(0xFF1E293B),
           surfaceContainerHighest: Color(0xFF334155),
         ),
+        textTheme: GoogleFonts.orbitronTextTheme(ThemeData.dark().textTheme),
       ),
       home: const HomeView(),
     ),
